@@ -24,4 +24,18 @@ public class Game {
      */
     public int getGameID() {return gameID;}
     public void setGameID(int gameID) {this.gameID = gameID;}
+
+    /*
+    Getter and setter for game mode
+     */
+    public int getGameMode() {return gameMode;}
+    public void setGameMode(int gameMode) {
+        // Since there are only 3 game modes, input can only be 1-3
+        if(gameMode > 0 && gameMode < 4) {
+            this.gameMode = gameMode;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid game mode. Please select a game mode between 1 and 3.");
+        }
+    }
 }
