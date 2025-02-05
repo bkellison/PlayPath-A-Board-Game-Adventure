@@ -18,4 +18,10 @@ public class Game {
         this.playerID = playerID;
         this.cpus = cpus;
     }
+
+    /*
+    Getter and setter for game ID
+     */
+    public int getGameID() {return gameID;}
+    public void setGameID(int gameID) {this.gameID = gameID;}
 }
