@@ -14,7 +14,15 @@ public class Game {
      */
     public Game(int gameID, int gameMode, int playerID, boolean cpus) {
         this.gameID = gameID;
-        this.gameMode = gameMode;
+
+        // Since there are only 3 game modes, input can only be 1-3
+        if(gameMode > 0 && gameMode < 4) {
+            this.gameMode = gameMode;
+        }
+        else {
+            throw new IllegalArgumentException("Invalid game mode. Please select a game mode between 1 and 3.");
+        }
+
         this.playerID = playerID;
         this.cpus = cpus;
     }
