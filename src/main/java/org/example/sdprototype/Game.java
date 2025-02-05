@@ -8,4 +8,14 @@ public class Game {
     /* ADD ONCE DICE CLASS COMPLETE
     private Dice dice;
      */
+
+    /*
+    Constructor for game class
+     */
+    public Game(int gameID, int gameMode, int playerID, boolean cpus) {
+        this.gameID = gameID;
+        this.gameMode = gameMode;
+        this.playerID = playerID;
+        this.cpus = cpus;
+    }
 }
