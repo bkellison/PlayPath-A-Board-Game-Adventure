@@ -58,4 +58,10 @@ public class Game {
      */
     public boolean getCpus() {return cpus;}
     public void setCpus(boolean cpus) {this.cpus = cpus;}
+
+    /*
+    Getter and setter for dice
+
+    ****ADD WHEN DICE CLASS IS DONE****
+     */
 }
