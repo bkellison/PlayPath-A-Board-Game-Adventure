@@ -46,4 +46,16 @@ public class Game {
             throw new IllegalArgumentException("Invalid game mode. Please select a game mode between 1 and 3.");
         }
     }
+
+    /*
+    Getter and setter for player ID
+     */
+    public int getPlayerID() {return playerID;}
+    public void setPlayerID(int playerID) {this.playerID = playerID;}
+
+    /*
+    Getter and setter for CPUs
+     */
+    public boolean getCpus() {return cpus;}
+    public void setCpus(boolean cpus) {this.cpus = cpus;}
 }
