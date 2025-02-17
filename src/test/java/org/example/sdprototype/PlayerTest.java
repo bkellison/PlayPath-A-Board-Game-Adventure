@@ -23,14 +23,15 @@ class PlayerTest {
 
     @ParameterizedTest
     @CsvSource({
-            "2, '1,1', true",
-            "3, '2,5', false"
+            "2, 1, 1, true",
+            "3, 2, 5, false",
+            "50, 6, 0, true",
+            "32, 3, 9, false",
+            "8, 3, 6, true"
     })
-    void testPlayerSetters(int id, String locationStr, boolean turn) {
-        // Convert the string into an int array
-        int[] location = Arrays.stream(locationStr.split(","))
-                .mapToInt(Integer::parseInt)
-                .toArray();
+    void testPlayerSetters(int id, int loc1, int loc2, boolean turn) {
+        // Convert 2 location integers into an array
+        int[] location = {loc1, loc2};
 
         testPlayer.setPlayerID(id);
         testPlayer.setLocation(location);
