@@ -11,7 +11,7 @@ class DiceCardTest {
     @BeforeEach
     void setUp() {
         dice = new Dice(6); // Default 6-sided dice
-        card = new Card(1, "Action", "Move forward 2 spaces");
+        card = new Card(1, Card.CardType.MOVE_FORWARD, "Move forward 2 spaces", 2);
     }
 
     @Test
@@ -24,7 +24,7 @@ class DiceCardTest {
 
     @Test
     void testDiceDefaultSides() {
-        Dice defaultDice = new Dice();
+        Dice defaultDice = new Dice(); // Ensure Dice has a default constructor
         assertEquals(6, defaultDice.getSides(), "Default dice should have 6 sides");
     }
 
@@ -37,18 +37,19 @@ class DiceCardTest {
     @Test
     void testCardGetters() {
         assertEquals(1, card.getCardID(), "Card ID should match");
-        assertEquals("Action", card.getType(), "Card type should match");
+        assertEquals(Card.CardType.MOVE_FORWARD, card.getType(), "Card type should match");
         assertEquals("Move forward 2 spaces", card.getDescription(), "Card description should match");
+        assertEquals(2, card.getMoveSpaces(), "Card move spaces should match");
     }
 
     @Test
     void testCardSetters() {
         card.setCardID(2);
-        card.setType("Penalty");
+        card.setType(Card.CardType.LOSE_TURN);
         card.setDescription("Lose a turn");
 
         assertEquals(2, card.getCardID(), "Card ID should update");
-        assertEquals("Penalty", card.getType(), "Card type should update");
+        assertEquals(Card.CardType.LOSE_TURN, card.getType(), "Card type should update");
         assertEquals("Lose a turn", card.getDescription(), "Card description should update");
     }
 }

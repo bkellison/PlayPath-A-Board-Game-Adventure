@@ -39,8 +39,8 @@ public class Card {
     /*
     Getter and setter for move amount
      */
-    public int getMoveAmount() { return moveSpaces; }
-    public void setMoveAmount(int moveSpaces) { this.moveSpaces = moveSpaces; }
+    public int getMoveSpaces() { return moveSpaces; }
+    public void setMoveSpaces(int moveSpaces) { this.moveSpaces = moveSpaces; }
 
     /*
     Effect method to process the card's action
