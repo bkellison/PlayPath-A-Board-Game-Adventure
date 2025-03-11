@@ -50,7 +50,7 @@ public class HelloController {
     public HelloController() {currentPosition = 0;}
 
     @FXML
-    private void initialize() {
+    public void initialize() {
         // Event handling: any key press or mouse click will move the character
         //characterImage.setOnMouseClicked(this::moveCharacter);
         background.setOnMouseClicked(this::moveCharacter);
@@ -63,19 +63,29 @@ public class HelloController {
         }
     }
 
+    /* Getters for characterImage, background, and currentPosition, */
+    public ImageView getCharacterImage() { return characterImage; }
+    public AnchorPane getBackground() { return background; }
+    public int getCurrentPosition() { return currentPosition; }
+
+    /* Setters for characterImage, background, and currentPosition, */
+    public void setCharacterImage(ImageView characterImage) { this.characterImage = characterImage; }
+    public void setBackground(AnchorPane background) { this.background = background; }
+    public void setCurrentPosition(int currentPosition) { this.currentPosition = currentPosition; }
+
     // Method to move the character to the next position on a mouse event
-    private void moveCharacter(MouseEvent event) {
+    public void moveCharacter(MouseEvent event) {
         // Check if there are more positions to move to
         checkPosition();
     }
 
     // Method to move the character to the next position on a key event
-    private void moveCharacter(KeyEvent event) {
+    public void moveCharacter(KeyEvent event) {
         // Check if there are more positions to move to
         checkPosition();
     }
 
-    private void checkPosition() {
+    public void checkPosition() {
         if (currentPosition < COORDINATES.length - 1) {
             // If yes, set our position to next space
             currentPosition++;
