@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import java.util.Random;
 
 public class HelloController {
 
@@ -46,8 +47,19 @@ public class HelloController {
     private AnchorPane background;
 
     private int currentPosition;
-
-    public HelloController() {currentPosition = 0;}
+    //-----
+    private boolean skipTurn;
+    private Random random;
+    private CardController cardController;
+    //-----
+    public HelloController() {
+        currentPosition = 0;
+        //------
+        skipTurn = false;
+        random = new Random();
+        cardController = new CardController();
+        //------
+    }
 
     @FXML
     public void initialize() {
@@ -76,13 +88,25 @@ public class HelloController {
     // Method to move the character to the next position on a mouse event
     public void moveCharacter(MouseEvent event) {
         // Check if there are more positions to move to
-        checkPosition();
+        //------
+        if (!skipTurn) {
+            checkPosition();
+        } else {
+            skipTurn = false; // Reset skip turn after skipping
+        }
+        //-----
     }
 
     // Method to move the character to the next position on a key event
     public void moveCharacter(KeyEvent event) {
         // Check if there are more positions to move to
-        checkPosition();
+        //------
+        if (!skipTurn) {
+            checkPosition();
+        } else {
+            skipTurn = false;
+        }
+        //-----
     }
 
     public void checkPosition() {
@@ -98,5 +122,33 @@ public class HelloController {
         // Now move the character accordingly
         characterImage.setLayoutX(COORDINATES[currentPosition][0]);
         characterImage.setLayoutY(COORDINATES[currentPosition][1]);
+
+        //-----
+        // Check if the new position requires drawing a card
+        if (isSpecialSpace(currentPosition)) {
+            Card card = cardController.drawCard();
+            card.applyEffect(this);
+        }
+        //-----
     }
+
+    //------
+    private boolean isSpecialSpace(int position) {
+        return position % 5 == 0; // Example: Special spaces every 5 tiles
+    }
+
+    public void setSkipTurn(boolean skip) {
+        this.skipTurn = skip;
+    }
+
+    public void showQuiz() {}
+
+    public void moveForward(int spaces) {
+        currentPosition += spaces;
+        if (currentPosition >= COORDINATES.length) {
+            currentPosition = COORDINATES.length - 1; // Prevent out-of-bounds
+        }
+    }
+    //------
+
 }
