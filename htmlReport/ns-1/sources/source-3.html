@@ -1,0 +1,218 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>Coverage Report > HelloController</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope:     <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">org.example.sdprototype</a>
+</div>
+
+<h1>Coverage Summary for Class: HelloController (org.example.sdprototype)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Class, %
+</th>
+<th class="coverageStat 
+">
+  Method, %
+</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+<th class="coverageStat 
+">
+  Line, %
+</th>
+</tr>
+<tr>
+  <td class="name">HelloController</td>
+<td class="coverageStat">
+  <span class="percent">
+    100%
+  </span>
+  <span class="absValue">
+    (1/1)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    66.7%
+  </span>
+  <span class="absValue">
+    (8/12)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    50%
+  </span>
+  <span class="absValue">
+    (2/4)
+  </span>
+</td>
+<td class="coverageStat">
+  <span class="percent">
+    63.2%
+  </span>
+  <span class="absValue">
+    (12/19)
+  </span>
+</td>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package org.example.sdprototype;
+&nbsp;
+&nbsp;import javafx.fxml.FXML;
+&nbsp;import javafx.scene.image.ImageView;
+&nbsp;import javafx.scene.input.MouseEvent;
+&nbsp;import javafx.scene.input.KeyEvent;
+&nbsp;import javafx.scene.Scene;
+&nbsp;import javafx.scene.layout.AnchorPane;
+&nbsp;
+&nbsp;public class HelloController {
+&nbsp;
+&nbsp;    // Field that stores the coordinates of the game board
+&nbsp;    // 26 spaces, so 26 coordinates
+<b class="fc">&nbsp;    private static final int[][] COORDINATES = {</b>
+&nbsp;            {123, 720},
+&nbsp;            {123, 590},
+&nbsp;            {123, 460},
+&nbsp;            {123, 320},
+&nbsp;            {123, 200},
+&nbsp;            {160, 90},
+&nbsp;            {270, 80},
+&nbsp;            {380, 100},
+&nbsp;            {385, 240},
+&nbsp;            {385, 370},
+&nbsp;            {385, 500},
+&nbsp;            {385, 640},
+&nbsp;            {470, 730},
+&nbsp;            {600, 725},
+&nbsp;            {645, 600},
+&nbsp;            {645, 475},
+&nbsp;            {645, 345},
+&nbsp;            {645, 215},
+&nbsp;            {665, 100},
+&nbsp;            {775, 75},
+&nbsp;            {885, 95},
+&nbsp;            {907, 200},
+&nbsp;            {907, 320},
+&nbsp;            {907, 450},
+&nbsp;            {907, 580},
+&nbsp;            {907, 710}
+&nbsp;    };
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    private ImageView characterImage;
+&nbsp;    @FXML
+&nbsp;    private AnchorPane background;
+&nbsp;
+&nbsp;    private int currentPosition;
+&nbsp;
+<b class="fc">&nbsp;    public HelloController() {currentPosition = 0;}</b>
+&nbsp;
+&nbsp;    @FXML
+&nbsp;    public void initialize() {
+&nbsp;        // Event handling: any key press or mouse click will move the character
+&nbsp;        //characterImage.setOnMouseClicked(this::moveCharacter);
+<b class="nc">&nbsp;        background.setOnMouseClicked(this::moveCharacter);</b>
+&nbsp;
+&nbsp;        // Add key event listener once the scene is set
+&nbsp;        // This ensures we don&#39;t call getScene() before the scene is assigned
+<b class="nc">&nbsp;        Scene scene = characterImage.getScene();</b>
+<b class="nc">&nbsp;        if (scene != null) {</b>
+<b class="nc">&nbsp;            scene.setOnKeyPressed(this::moveCharacter);</b>
+&nbsp;        }
+&nbsp;    }
+&nbsp;
+&nbsp;    /* Getters for characterImage, background, and currentPosition, */
+<b class="nc">&nbsp;    public ImageView getCharacterImage() { return characterImage; }</b>
+<b class="nc">&nbsp;    public AnchorPane getBackground() { return background; }</b>
+<b class="fc">&nbsp;    public int getCurrentPosition() { return currentPosition; }</b>
+&nbsp;
+&nbsp;    /* Setters for characterImage, background, and currentPosition, */
+<b class="fc">&nbsp;    public void setCharacterImage(ImageView characterImage) { this.characterImage = characterImage; }</b>
+<b class="fc">&nbsp;    public void setBackground(AnchorPane background) { this.background = background; }</b>
+<b class="nc">&nbsp;    public void setCurrentPosition(int currentPosition) { this.currentPosition = currentPosition; }</b>
+&nbsp;
+&nbsp;    // Method to move the character to the next position on a mouse event
+&nbsp;    public void moveCharacter(MouseEvent event) {
+&nbsp;        // Check if there are more positions to move to
+<b class="fc">&nbsp;        checkPosition();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    // Method to move the character to the next position on a key event
+&nbsp;    public void moveCharacter(KeyEvent event) {
+&nbsp;        // Check if there are more positions to move to
+<b class="fc">&nbsp;        checkPosition();</b>
+&nbsp;    }
+&nbsp;
+&nbsp;    public void checkPosition() {
+<b class="fc">&nbsp;        if (currentPosition &lt; COORDINATES.length - 1) {</b>
+&nbsp;            // If yes, set our position to next space
+<b class="fc">&nbsp;            currentPosition++;</b>
+&nbsp;        }
+&nbsp;        else {
+&nbsp;            // If not, go back to the beginning
+<b class="fc">&nbsp;            currentPosition = 0;</b>
+&nbsp;        }
+&nbsp;
+&nbsp;        // Now move the character accordingly
+<b class="fc">&nbsp;        characterImage.setLayoutX(COORDINATES[currentPosition][0]);</b>
+<b class="fc">&nbsp;        characterImage.setLayoutY(COORDINATES[currentPosition][1]);</b>
+&nbsp;    }
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2025-03-10 22:58</div>
+</div>
+</body>
+</html>
