@@ -22,11 +22,6 @@ public class Dice {
     }
 
     /*
-    Getter for number of sides
-     */
-    public int getSides() { return sides; }
-
-    /*
     Rolls the dice and returns a random value between 1 and the number of sides
      */
     public int roll() {
