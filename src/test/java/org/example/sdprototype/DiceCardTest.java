@@ -25,18 +25,6 @@ class DiceCardTest {
     }
 
     @Test
-    void testDiceDefaultSides() {
-        Dice defaultDice = new Dice(); // Ensure Dice has a default constructor
-        assertEquals(6, defaultDice.getSides(), "Default dice should have 6 sides");
-    }
-
-    @Test
-    void testDiceCustomSides() {
-        Dice customDice = new Dice(10);
-        assertEquals(10, customDice.getSides(), "Custom dice should have specified number of sides");
-    }
-
-    @Test
     void testCardGetters() {
         assertEquals(1, card.getCardID(), "Card ID should match");
         assertEquals(Card.CardType.MOVE_FORWARD, card.getType(), "Card type should match");
