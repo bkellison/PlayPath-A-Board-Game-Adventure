@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.GameLogic;
 
 public class Player {
     private int playerID;

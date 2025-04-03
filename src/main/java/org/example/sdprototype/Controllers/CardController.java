@@ -1,4 +1,6 @@
-package org.example.sdprototype;
+package org.example.sdprototype.Controllers;
+
+import org.example.sdprototype.GameLogic.Card;
 
 import java.util.Random;
 

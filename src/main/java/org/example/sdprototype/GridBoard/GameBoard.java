@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.GridBoard;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -12,6 +12,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.example.sdprototype.GameLogic.Player;
+import org.example.sdprototype.UI.TrackSelectionScreen;
+import org.example.sdprototype.UI.WelcomeScreen;
 
 public class GameBoard extends Application {
 

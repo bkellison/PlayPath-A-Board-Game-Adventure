@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.Application;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

@@ -1,7 +1,8 @@
-package org.example.sdprototype;
+package org.example.sdprototype.Application;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.example.sdprototype.UI.WelcomeScreen;
 
 /**
  * The main application class for the board game.

@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.GameLogic;
 
 import java.util.Random;
 

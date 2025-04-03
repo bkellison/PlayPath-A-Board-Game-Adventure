@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.UI;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;

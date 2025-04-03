@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -6,6 +6,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import org.example.sdprototype.GameLogic.Card;
+
 import java.util.Random;
 
 public class HelloController {

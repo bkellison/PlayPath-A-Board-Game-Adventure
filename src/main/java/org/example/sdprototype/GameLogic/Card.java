@@ -1,4 +1,6 @@
-package org.example.sdprototype;
+package org.example.sdprototype.GameLogic;
+
+import org.example.sdprototype.Controllers.HelloController;
 
 public class Card {
     public enum CardType { MOVE_FORWARD, LOSE_TURN, QUIZ }

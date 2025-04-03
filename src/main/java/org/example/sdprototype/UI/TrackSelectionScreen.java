@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.UI;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -14,6 +14,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.example.sdprototype.GridBoard.GameBoard;
+import org.example.sdprototype.GridBoard.GameTrack;
 
 public class TrackSelectionScreen {
     private Stage primaryStage;

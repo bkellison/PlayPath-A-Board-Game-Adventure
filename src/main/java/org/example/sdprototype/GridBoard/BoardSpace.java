@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.GridBoard;
 import javafx.geometry.Point2D;
 import javafx.scene.layout.Region;
 import javafx.scene.paint.Color;

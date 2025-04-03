@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.GridBoard;
 
 import java.util.ArrayList;
 import java.util.List;

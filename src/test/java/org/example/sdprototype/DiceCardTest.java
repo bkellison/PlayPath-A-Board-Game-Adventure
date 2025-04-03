@@ -1,5 +1,7 @@
 package org.example.sdprototype;
 
+import org.example.sdprototype.GameLogic.Card;
+import org.example.sdprototype.GameLogic.Dice;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
