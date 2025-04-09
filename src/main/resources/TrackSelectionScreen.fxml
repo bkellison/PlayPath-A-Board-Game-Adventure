@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.sdprototype.Controllers.TrackSelectionScreenController"
+            style="-fx-background-color: #f5f5f5;"
+            prefHeight="600.0" prefWidth="800.0">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <top>
+        <Label text="Select a Track" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Arial Bold" size="24.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets top="20.0" bottom="30.0" />
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <HBox alignment="CENTER" spacing="40.0">
+            <!-- Left Side: Track Buttons -->
+            <VBox alignment="CENTER" spacing="15.0">
+                <Button fx:id="track1Button" mnemonicParsing="false" onAction="#handleTrack1Button"
+                        prefHeight="40.0" prefWidth="200.0" style="-fx-padding: 10;">
+                    <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <Circle fx:id="track1Circle" fill="BLUE" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label text="Track 1" />
+                        </HBox>
+                    </graphic>
+                </Button>
+                <Button fx:id="track2Button" mnemonicParsing="false" onAction="#handleTrack2Button"
+                        prefHeight="40.0" prefWidth="200.0" style="-fx-padding: 10;">
+                    <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <Circle fx:id="track2Circle" fill="RED" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label text="Track 2" />
+                        </HBox>
+                    </graphic>
+                </Button>
+                <Button fx:id="track3Button" mnemonicParsing="false" onAction="#handleTrack3Button"
+                        prefHeight="40.0" prefWidth="200.0" style="-fx-padding: 10;">
+                    <graphic>
+                        <HBox alignment="CENTER_LEFT" spacing="10.0">
+                            <Circle fx:id="track3Circle" fill="GREEN" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
+                            <Label text="Track 3" />
+                        </HBox>
+                    </graphic>
+                </Button>
+            </VBox>
+
+            <!-- Right Side: Track Information -->
+            <VBox prefWidth="250.0" spacing="10.0" style="-fx-background-color: #e0e0e0; -fx-border-color: #cccccc; -fx-border-width: 1;">
+                <padding>
+                    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                </padding>
+                <Label text="Track Information">
+                    <font>
+                        <Font name="Arial Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Text strokeType="OUTSIDE" strokeWidth="0.0"
+                      text="Track 1: Classic path &#10;&#10;Track 2: Medium difficulty &#10;&#10;Track 3: Expert level"
+                      wrappingWidth="210.0" />
+            </VBox>
+        </HBox>
+    </center>
+    <bottom>
+        <Button fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#handleStartGameButton"
+                prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"
+                text="Start Game" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Arial Bold" size="14.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets top="30.0" bottom="20.0" />
+            </BorderPane.margin>
+        </Button>
+    </bottom>
+</BorderPane>

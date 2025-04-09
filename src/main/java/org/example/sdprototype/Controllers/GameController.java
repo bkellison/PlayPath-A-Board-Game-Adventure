@@ -1,31 +1,27 @@
 package org.example.sdprototype.Controllers;
-import org.example.sdprototype.GridBoard.GameBoard;
-import org.example.sdprototype.GridBoard.GameTrack;
-import javafx.stage.Stage;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.example.sdprototype.Application.MainApplication;
 import org.example.sdprototype.GameLogic.Player;
-import org.example.sdprototype.GridBoard.BoardSpace;
 import org.example.sdprototype.GridBoard.BoardGrid;
-import org.example.sdprototype.UI.TrackSelectionScreen;
-import org.example.sdprototype.UI.WelcomeScreen;
+import org.example.sdprototype.GridBoard.BoardSpace;
+import org.example.sdprototype.GridBoard.GameTrack;
 
-import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-
+import java.io.IOException;
 import java.util.List;
 
 public class GameController {
@@ -36,6 +32,8 @@ public class GameController {
     private Circle playerToken;
     private Pane trackDisplayPane;
     private boolean animationInProgress = false;
+    private Button rollDiceButton;
+    private Text diceResultText;
 
     public GameController(BoardGrid boardGrid, GameTrack track) {
         this.boardGrid = boardGrid;
@@ -51,6 +49,14 @@ public class GameController {
 
         // Add the player token to the track display pane
         trackDisplayPane.getChildren().add(playerToken);
+    }
+
+    public void setRollDiceButton(Button rollDiceButton) {
+        this.rollDiceButton = rollDiceButton;
+    }
+
+    public void setDiceResultText(Text diceResultText) {
+        this.diceResultText = diceResultText;
     }
 
     public void initializePlayer() {
@@ -99,12 +105,14 @@ public class GameController {
         }
     }
 
-    public void movePlayer(int steps, Button rollDiceButton) {
+    public void movePlayer(int steps) {
         // Disable roll button during animation
         animationInProgress = true;
-        rollDiceButton.setDisable(true);
+        if (rollDiceButton != null) {
+            rollDiceButton.setDisable(true);
+        }
 
-        System.out.println("Current track index before move: " + currentTrackIndex); // Add logging
+        System.out.println("Current track index before move: " + currentTrackIndex);
 
         // Get current track positions
         List<int[]> trackPositions = selectedTrack.getTrackPositions();
@@ -115,14 +123,20 @@ public class GameController {
         // Check if player has reached or passed the end
         if (targetIndex >= trackPositions.size() - 1) {
             // Final hop animation to the last space
-            animatePlayerMovement(currentTrackIndex, trackPositions.size() - 1, trackPositions, true, rollDiceButton);
+            animatePlayerMovement(currentTrackIndex, trackPositions.size() - 1, trackPositions, true);
         } else {
             // Normal movement animation
-            animatePlayerMovement(currentTrackIndex, targetIndex, trackPositions, false, rollDiceButton);
+            animatePlayerMovement(currentTrackIndex, targetIndex, trackPositions, false);
         }
     }
-    private void animatePlayerMovement(int startIndex, int endIndex, List<int[]> trackPositions,
-                                       boolean isWinningMove, Button rollDiceButton) {
+
+    // Add overloaded method to handle button parameter
+    public void movePlayer(int steps, Button button) {
+        this.rollDiceButton = button;
+        movePlayer(steps);
+    }
+
+    private void animatePlayerMovement(int startIndex, int endIndex, List<int[]> trackPositions, boolean isWinningMove) {
         // Create a timeline for animation
         Timeline timeline = new Timeline();
 
@@ -143,11 +157,11 @@ public class GameController {
             BoardSpace space = boardGrid.getBoardSpace(row, col);
             if (space != null) {
                 // Get the parent of the player token
-                javafx.scene.Node tokenParent = playerToken.getParent();
+                Node tokenParent = playerToken.getParent();
 
                 // Get the actual bounds of the space in scene coordinates
-                javafx.geometry.Bounds spaceBounds = space.localToScene(space.getBoundsInLocal());
-                javafx.geometry.Point2D spaceCenter = tokenParent.sceneToLocal(
+                Bounds spaceBounds = space.localToScene(space.getBoundsInLocal());
+                Point2D spaceCenter = tokenParent.sceneToLocal(
                         spaceBounds.getMinX() + spaceBounds.getWidth()/2,
                         spaceBounds.getMinY() + spaceBounds.getHeight()/2
                 );
@@ -173,7 +187,6 @@ public class GameController {
                         Duration.seconds(timePoint + hopDuration),
                         event -> {
                             if (currentIndex == endIndex) {
-
                                 // Update the current index when this frame finishes
                                 currentTrackIndex = currentIndex;
                                 playerToken.setCenterX(finalCenterX);
@@ -190,7 +203,9 @@ public class GameController {
                                 } else {
                                     // Re-enable roll button after animation completes
                                     animationInProgress = false;
-                                    rollDiceButton.setDisable(false);
+                                    if (rollDiceButton != null) {
+                                        rollDiceButton.setDisable(false);
+                                    }
                                 }
                             }
                         },
@@ -210,69 +225,25 @@ public class GameController {
     }
 
     private void showWinnerScreen() {
-        // Get the main stage from the roll button's scene
-        Stage mainStage = (Stage) trackDisplayPane.getScene().getWindow();
+        try {
+            // Get the main stage from the track display pane's scene
+            Stage mainStage = (Stage) trackDisplayPane.getScene().getWindow();
 
-        // Create the winner screen
-        BorderPane winnerLayout = new BorderPane();
-        winnerLayout.setStyle("-fx-background-color: #f8f9fa;");
+            // Load the WinnerScreen.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/WinnerScreen.fxml"));
+            Parent root = loader.load();
 
-        VBox contentBox = new VBox(30);
-        contentBox.setAlignment(Pos.CENTER);
+            // Get the controller and set the player info
+            WinnerScreenController controller = loader.getController();
+            controller.setPlayerInfo(currentPlayer);
 
-        Text congratsText = new Text("Congratulations!");
-        congratsText.setFont(Font.font("Arial", FontWeight.BOLD, 36));
-        congratsText.setFill(Color.GREEN);
-
-        Text winnerText = new Text("Player 1 has won the game!");
-        winnerText.setFont(Font.font("Arial", 24));
-
-        Button playAgainButton = new Button("Play Again");
-        playAgainButton.setPrefWidth(200);
-        playAgainButton.setPrefHeight(50);
-        playAgainButton.setFont(Font.font("Arial", 16));
-        playAgainButton.setStyle("-fx-background-color: #4CAF50; -fx-text-fill: white;");
-
-        Button mainMenuButton = new Button("Main Menu");
-        mainMenuButton.setPrefWidth(200);
-        mainMenuButton.setPrefHeight(50);
-        mainMenuButton.setFont(Font.font("Arial", 16));
-
-        contentBox.getChildren().addAll(congratsText, winnerText, playAgainButton, mainMenuButton);
-        winnerLayout.setCenter(contentBox);
-
-        Scene winnerScene = new Scene(winnerLayout, 800, 600);
-        mainStage.setScene(winnerScene);
-
-        // Set button actions
-        playAgainButton.setOnAction(e -> {
-            // Reset to track selection
-            try {
-                TrackSelectionScreen trackScreen = new TrackSelectionScreen(mainStage);
-                mainStage.setScene(trackScreen.getScene());
-            } catch (Exception ex) {
-                System.out.println("Could not return to track selection. Please update the imports.");
-                GameBoard newGame = new GameBoard();
-                newGame.setTrack(selectedTrack);
-                newGame.init(mainStage);
-            }
-        });
-
-        mainMenuButton.setOnAction(e -> {
-            // Return to welcome screen
-            try {
-                WelcomeScreen welcomeScreen = new WelcomeScreen(mainStage);
-                mainStage.setScene(welcomeScreen.getScene());
-            } catch (Exception ex) {
-                System.out.println("Could not return to welcome screen. Please update the imports.");
-                try {
-                    new MainApplication().start(new Stage());
-                    mainStage.close();
-                } catch (Exception ex2) {
-                    System.out.println("Could not restart application.");
-                }
-            }
-        });
+            // Create and show the scene
+            Scene winnerScene = new Scene(root, 800, 600);
+            mainStage.setScene(winnerScene);
+        } catch (IOException e) {
+            System.out.println("Error loading winner screen: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public Pane getTrackDisplayPane() {

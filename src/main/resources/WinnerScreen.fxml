@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.sdprototype.Controllers.WinnerScreenController"
+            style="-fx-background-color: #f8f9fa;"
+            prefHeight="600.0" prefWidth="800.0">
+
+    <center>
+        <VBox alignment="CENTER" spacing="30.0">
+            <Text fx:id="congratsText" text="Congratulations!" fill="GREEN">
+                <font>
+                    <Font name="Arial Bold" size="36.0" />
+                </font>
+            </Text>
+
+            <Text fx:id="winnerText" text="Player has won the game!">
+                <font>
+                    <Font name="Arial" size="24.0" />
+                </font>
+            </Text>
+
+            <Button fx:id="playAgainButton" text="Play Again"
+                    prefWidth="200.0" prefHeight="50.0"
+                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"
+                    onAction="#handlePlayAgain">
+                <font>
+                    <Font name="Arial" size="16.0" />
+                </font>
+            </Button>
+
+            <Button fx:id="mainMenuButton" text="Main Menu"
+                    prefWidth="200.0" prefHeight="50.0"
+                    onAction="#handleMainMenu">
+                <font>
+                    <Font name="Arial" size="16.0" />
+                </font>
+            </Button>
+        </VBox>
+    </center>
+
+</BorderPane>

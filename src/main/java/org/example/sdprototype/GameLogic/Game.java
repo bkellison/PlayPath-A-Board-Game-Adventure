@@ -5,9 +5,6 @@ public class Game {
     private int gameMode;
     private int playerID;
     private boolean cpus;
-    /* ADD ONCE DICE CLASS COMPLETE
-    private Dice dice;
-     */
 
     /*
     Constructor for game class
@@ -59,9 +56,4 @@ public class Game {
     public boolean getCpus() {return cpus;}
     public void setCpus(boolean cpus) {this.cpus = cpus;}
 
-    /*
-    Getter and setter for dice
-
-    ****ADD WHEN DICE CLASS IS DONE****
-     */
 }

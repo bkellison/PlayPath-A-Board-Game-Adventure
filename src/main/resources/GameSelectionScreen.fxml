@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.sdprototype.Controllers.GameSelectionScreenController"
+            style="-fx-background-color: #f5f5f5;"
+            prefHeight="600.0" prefWidth="800.0">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <top>
+        <Label text="Game Selection" BorderPane.alignment="CENTER">
+            <font>
+                <Font name="Arial Bold" size="30.0" />
+            </font>
+            <BorderPane.margin>
+                <Insets top="40.0" bottom="50.0" />
+            </BorderPane.margin>
+        </Label>
+    </top>
+    <center>
+        <VBox alignment="CENTER" spacing="20.0" BorderPane.alignment="CENTER">
+            <StackPane>
+                <VBox alignment="CENTER" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 10; -fx-border-color: #dddddd; -fx-border-radius: 10; -fx-border-width: 1;">
+                    <padding>
+                        <Insets top="30.0" right="30.0" bottom="30.0" left="30.0" />
+                    </padding>
+                    <Label text="Saved Games" textFill="#555555">
+                        <font>
+                            <Font name="Arial Bold" size="18.0" />
+                        </font>
+                    </Label>
+                    <Button fx:id="savedGame1Button" mnemonicParsing="false" onAction="#handleSavedGameButton"
+                            prefHeight="50.0" prefWidth="250.0" text="Saved Game 1">
+                        <font>
+                            <Font name="Arial" size="14.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="savedGame2Button" mnemonicParsing="false" onAction="#handleSavedGameButton"
+                            prefHeight="50.0" prefWidth="250.0" text="Saved Game 2">
+                        <font>
+                            <Font name="Arial" size="14.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="savedGame3Button" mnemonicParsing="false" onAction="#handleSavedGameButton"
+                            prefHeight="50.0" prefWidth="250.0" text="Saved Game 3">
+                        <font>
+                            <Font name="Arial" size="14.0" />
+                        </font>
+                    </Button>
+                </VBox>
+            </StackPane>
+
+            <Button fx:id="createGameButton" mnemonicParsing="false" onAction="#handleCreateGameButton"
+                    prefHeight="60.0" prefWidth="250.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"
+                    text="Create New Game">
+                <font>
+                    <Font name="Arial Bold" size="16.0" />
+                </font>
+                <VBox.margin>
+                    <Insets top="20.0" />
+                </VBox.margin>
+            </Button>
+        </VBox>
+    </center>
+</BorderPane>

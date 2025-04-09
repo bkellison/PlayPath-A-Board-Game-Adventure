@@ -1,22 +1,30 @@
 package org.example.sdprototype.Application;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-import org.example.sdprototype.UI.WelcomeScreen;
+import org.example.sdprototype.Controllers.WelcomeScreenController;
 
-/**
- * The main application class for the board game.
- * This class initializes the game and shows the welcome screen.
- */
+
 public class MainApplication extends Application {
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(Stage primaryStage) throws Exception {
         primaryStage.setTitle("Board Game");
 
-        // Create and show the welcome screen
-        WelcomeScreen welcomeScreen = new WelcomeScreen(primaryStage);
-        primaryStage.setScene(welcomeScreen.getScene());
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/WelcomeScreen.fxml"));
+        Parent root = loader.load();
+
+        // Get the controller and set the stage
+        WelcomeScreenController controller = loader.getController();
+
+        Scene scene = new Scene(root, 800, 600);
+        primaryStage.setScene(scene);
+
+        controller.setStage(primaryStage);
+
         primaryStage.show();
     }
 
