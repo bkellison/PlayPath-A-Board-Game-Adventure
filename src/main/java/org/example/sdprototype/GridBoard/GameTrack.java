@@ -26,11 +26,11 @@ public class GameTrack {
         return trackColor;
     }
 
-    // Convert spaceIds to row/col positions for highlighting
+    // Convert spaceIds to row/col positions
     public List<int[]> getTrackPositions() {
         List<int[]> positions = new ArrayList<>();
         for (int spaceId : spaceIds) {
-            int id = spaceId - 1; // Convert 1-based to 0-based
+            int id = spaceId - 1;
             int row = id / 8;
             int col;
 
@@ -48,7 +48,7 @@ public class GameTrack {
     }
 
     public static GameTrack createTrack1() {
-        int[] spaces = {1, 2, 3, 4, 5, 6, 7, 8, 9, 24, 23, 22, 21, 20, 19, 18, 17, 32, 33, 34, 35, 36, 37, 38, 39, 40};
+        int[] spaces = {33, 32, 17, 16, 1, 2, 3, 14, 19, 30, 35, 36, 37, 38, 27, 22, 11, 6, 7, 8, 9, 24, 25, 40};
         return new GameTrack("Track 1", spaces, Color.BLUE);
     }
 
