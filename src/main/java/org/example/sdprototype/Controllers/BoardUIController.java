@@ -4,7 +4,9 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import javafx.scene.control.Label;
 import org.example.sdprototype.GridBoard.GameTrack;
+
 
 public class BoardUIController {
     @FXML
@@ -18,6 +20,9 @@ public class BoardUIController {
 
     @FXML
     private Text diceResultText;
+
+    @FXML
+    private Label messageLabel;
 
     private GameController gameController;
     private GameTrack selectedTrack;
@@ -52,9 +57,11 @@ public class BoardUIController {
             String message = gameController.getSpecialMessage();
             if (message != null) {
                 System.out.println("UI controller has received message: " + message);
+                messageLabel.setText(message);
             }
             else {
                 System.out.println("UI controller has received NO special message");
+                messageLabel.setText("");
             }
         }
     }
