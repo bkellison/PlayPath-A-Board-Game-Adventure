@@ -1,11 +1,15 @@
 package org.example.sdprototype.Controllers;
 
+import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.scene.control.Label;
+import javafx.util.Duration;
 import org.example.sdprototype.GridBoard.GameTrack;
+
+import java.util.Objects;
 
 
 public class BoardUIController {
@@ -37,7 +41,18 @@ public class BoardUIController {
 
     public void setSelectedTrack(GameTrack track) {
         this.selectedTrack = track;
-        trackInfoLabel.setText("Current Track: " + track.getName());
+
+        // Display track name depending on the mode selected
+        String trackName = selectedTrack.getName();
+        if (Objects.equals(trackName, "Track 1")) {
+            trackInfoLabel.setText("Shrek's Swamp Trek");
+        }
+        else if (Objects.equals(trackName, "Track 2")) {
+            trackInfoLabel.setText("Ocean Odyssey");
+        }
+        else {
+            trackInfoLabel.setText("Pirate's Gold Rush");
+        }
     }
 
     @FXML
@@ -53,13 +68,19 @@ public class BoardUIController {
             // Move player based on dice roll
             gameController.movePlayer(diceRoll, rollDiceButton);
 
-            // Get the message to be displayed if the user has landed on a special space:
+            // Get the message to be displayed if the user has landed on a special space
             String message = gameController.getSpecialMessage();
+
             if (message != null) {
-                System.out.println("UI controller has received message: " + message);
-                messageLabel.setText(message);
-            }
-            else {
+                // If there is a special message, delay showing it
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                pause.setOnFinished(pauseEvent -> {
+                    System.out.println("UI controller has received message: " + message);
+                    messageLabel.setText(message);
+                });
+                pause.play();
+            } else {
+                // No special message, update immediately
                 System.out.println("UI controller has received NO special message");
                 messageLabel.setText("");
             }

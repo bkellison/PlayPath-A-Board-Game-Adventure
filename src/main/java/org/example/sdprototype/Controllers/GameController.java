@@ -2,6 +2,7 @@ package org.example.sdprototype.Controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
@@ -189,18 +190,22 @@ public class GameController {
         if (specialAction != 0) {
             int finalTargetIndex = targetIndex + specialAction;
             System.out.println("Player hit a special space! Will move to: " + finalTargetIndex);
-            setSpecialMessage(specialMsg);
             System.out.println("Message: " + specialMsg);
+            setSpecialMessage(specialMsg);
 
-            // AFTER first animation finishes, start the special movement
             moveTimeline.setOnFinished(event -> {
-                Timeline specialMoveTimeline = animatePlayerMovement(targetIndex, finalTargetIndex, trackPositions, false);
-                specialMoveTimeline.setOnFinished(e -> {
-                    animationInProgress = false;
-                    if (rollDiceButton != null) {
-                        rollDiceButton.setDisable(false);
-                    }
+                // Pause for a short delay before triggering second animation
+                PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
+                pause.setOnFinished(pauseEvent -> {
+                    Timeline specialMoveTimeline = animatePlayerMovement(targetIndex, finalTargetIndex, trackPositions, false);
+                    specialMoveTimeline.setOnFinished(e -> {
+                        animationInProgress = false;
+                        if (rollDiceButton != null) {
+                            rollDiceButton.setDisable(false);
+                        }
+                    });
                 });
+                pause.play();
             });
         }
         else {
