@@ -1,6 +1,7 @@
 module org.example.sdprototype {
     requires javafx.controls;
     requires javafx.fxml;
+    requires com.fazecast.jSerialComm;
 
 
     opens org.example.sdprototype to javafx.fxml;
