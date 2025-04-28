@@ -16,6 +16,9 @@ public class BoardUIController {
     @FXML
     private Text playerInfoLabel;
 
+    @FXML
+    private Text diceResultText;
+
     private GameController gameController;
     private GameTrack selectedTrack;
 
@@ -39,10 +42,20 @@ public class BoardUIController {
             int diceRoll = (int)(Math.random() * 6) + 1;
 
             // Display dice result
-            Text diceResultText = new Text("Rolled: " + diceRoll);
+            System.out.println("Rolled value: " + diceRoll);
+            diceResultText.setText("Roll Dice: " + diceRoll);
 
             // Move player based on dice roll
             gameController.movePlayer(diceRoll, rollDiceButton);
+
+            // Get the message to be displayed if the user has landed on a special space:
+            String message = gameController.getSpecialMessage();
+            if (message != null) {
+                System.out.println("UI controller has received message: " + message);
+            }
+            else {
+                System.out.println("UI controller has received NO special message");
+            }
         }
     }
 

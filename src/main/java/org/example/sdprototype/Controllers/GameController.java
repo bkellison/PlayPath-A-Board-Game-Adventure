@@ -23,6 +23,7 @@ import org.example.sdprototype.GridBoard.GameTrack;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
 
 public class GameController {
     private BoardGrid boardGrid;
@@ -34,10 +35,55 @@ public class GameController {
     private boolean animationInProgress = false;
     private Button rollDiceButton;
     private Text diceResultText;
+    private int[] specialIdx;
+    private int[] specialActions;
+    private String[] messages;
+    private String specialMessage = null;
+
+    // Arrays that hold the indices of the special spaces for each theme
+    private final int[] specialIdx1 = { 3, 9, 13, 19 };
+    private final int[] specialIdx2 = {  };
+    private final int[] specialIdx3 = {  };
+
+    // Arrays to hold results of special spaces (ex. -1 space)
+    private final int[] specialActions1 = { -1, 1, 3, -2 };
+    private final int[] specialActions2 = {  };
+    private final int[] specialActions3 = {  };
+
+    // Arrays to hold the special messages that will be displayed on the screen as a result of landing on special spaces
+    private final String[] specialMessage1 = {
+            "Oh no! Lord Farquaad sents his knights after you — move back one space.",
+            "Fiona shows you a shortcut — move up one space!",
+            "Dragon swoops in and gives you a lift — fly forward three spaces!",
+            "Not the gumdrop buttons! The Gingerbread Man lost a leg! — move back two spaces."
+    };
+    private final String[] specialMessage2 = {  };
+    private final String[] specialMessage3 = {  };
 
     public GameController(BoardGrid boardGrid, GameTrack track) {
         this.boardGrid = boardGrid;
         this.selectedTrack = track;
+
+        // Based on the game mode chosen, set the special spaces indices
+        String trackName = selectedTrack.getName();
+        if (Objects.equals(trackName, "Track 1")) {
+            this.specialIdx = specialIdx1;
+            this.specialActions = specialActions1;
+            this.messages = specialMessage1;
+
+            // DEBUGGING:
+            System.out.println("Set special spaces, actions, and messages for track one.");
+        }
+        else if (Objects.equals(trackName, "Track 2")) {
+            this.specialIdx = specialIdx2;
+            this.specialActions = specialActions2;
+            this.messages = specialMessage2;
+        }
+        else if (Objects.equals(trackName, "Track 3")) {
+            this.specialIdx = specialIdx3;
+            this.specialActions = specialActions3;
+            this.messages = specialMessage3;
+        }
 
         // Create the track display pane
         trackDisplayPane = new Pane();
@@ -119,14 +165,53 @@ public class GameController {
 
         // Calculate target position index
         int targetIndex = Math.min(currentTrackIndex + steps, trackPositions.size() - 1);
+        System.out.println("Target index: " + targetIndex);
 
-        // Check if player has reached or passed the end
-        if (targetIndex >= trackPositions.size() - 1) {
-            // Final hop animation to the last space
-            animatePlayerMovement(currentTrackIndex, trackPositions.size() - 1, trackPositions, true);
-        } else {
-            // Normal movement animation
-            animatePlayerMovement(currentTrackIndex, targetIndex, trackPositions, false);
+        // Determine if this move results in the player winning
+        boolean isWinningMove = (targetIndex >= trackPositions.size() - 1);
+        System.out.println("Is winning move: " + isWinningMove);
+
+        // Get the timeline of the animation of player movement
+        Timeline moveTimeline = animatePlayerMovement(currentTrackIndex, targetIndex, trackPositions, isWinningMove);
+
+        // Check if landing on a special space
+        int specialAction = 0;
+        String specialMsg = null;
+        for (int i = 0; i < specialIdx.length; i++) {
+            if (specialIdx[i] == targetIndex) {
+                specialAction = specialActions[i];
+                specialMsg = messages[i];
+                break;
+            }
+        }
+
+        // If space is special, need to trigger additional animation
+        if (specialAction != 0) {
+            int finalTargetIndex = targetIndex + specialAction;
+            System.out.println("Player hit a special space! Will move to: " + finalTargetIndex);
+            setSpecialMessage(specialMsg);
+            System.out.println("Message: " + specialMsg);
+
+            // AFTER first animation finishes, start the special movement
+            moveTimeline.setOnFinished(event -> {
+                Timeline specialMoveTimeline = animatePlayerMovement(targetIndex, finalTargetIndex, trackPositions, false);
+                specialMoveTimeline.setOnFinished(e -> {
+                    animationInProgress = false;
+                    if (rollDiceButton != null) {
+                        rollDiceButton.setDisable(false);
+                    }
+                });
+            });
+        }
+        else {
+            // No special move, just re-enable after first move finishes and set the special message to null (should still be null if reaches this statement)
+            setSpecialMessage(specialMsg);
+            moveTimeline.setOnFinished(event -> {
+                animationInProgress = false;
+                if (rollDiceButton != null) {
+                    rollDiceButton.setDisable(false);
+                }
+            });
         }
     }
 
@@ -136,92 +221,103 @@ public class GameController {
         movePlayer(steps);
     }
 
-    private void animatePlayerMovement(int startIndex, int endIndex, List<int[]> trackPositions, boolean isWinningMove) {
+    private Timeline animatePlayerMovement(int startIndex, int endIndex, List<int[]> trackPositions, boolean isWinningMove) {
         // Create a timeline for animation
         Timeline timeline = new Timeline();
 
         // Duration for each hop
         double hopDuration = 0.7; // seconds
-
         double timePoint = 0;
 
-        // For each step in the path
-        for (int i = startIndex + 1; i <= endIndex; i++) {
-            int index = i;
-
-            // Calculate positions
-            int[] position = trackPositions.get(index);
-            int row = position[0];
-            int col = position[1];
-
-            BoardSpace space = boardGrid.getBoardSpace(row, col);
-            if (space != null) {
-                // Get the parent of the player token
-                Node tokenParent = playerToken.getParent();
-
-                // Get the actual bounds of the space in scene coordinates
-                Bounds spaceBounds = space.localToScene(space.getBoundsInLocal());
-                Point2D spaceCenter = tokenParent.sceneToLocal(
-                        spaceBounds.getMinX() + spaceBounds.getWidth()/2,
-                        spaceBounds.getMinY() + spaceBounds.getHeight()/2
-                );
-
-                // Use these exact coordinates for positioning
-                double centerX = spaceCenter.getX();
-                double centerY = spaceCenter.getY();
-
-                // Create final copies for event handler
-                final double finalCenterX = centerX;
-                final double finalCenterY = centerY;
-                final int currentIndex = index;
-
-                // Add hop up animation
-                KeyFrame hopUpFrame = new KeyFrame(
-                        Duration.seconds(timePoint + hopDuration/3),
-                        new KeyValue(playerToken.centerXProperty(), centerX),
-                        new KeyValue(playerToken.centerYProperty(), centerY - 20) // Hop up 20 pixels
-                );
-
-                // Add landing animation
-                KeyFrame landFrame = new KeyFrame(
-                        Duration.seconds(timePoint + hopDuration),
-                        event -> {
-                            if (currentIndex == endIndex) {
-                                // Update the current index when this frame finishes
-                                currentTrackIndex = currentIndex;
-                                playerToken.setCenterX(finalCenterX);
-                                playerToken.setCenterY(finalCenterY);
-
-                                // Update player object location
-                                if (currentPlayer != null) {
-                                    currentPlayer.setLocation(position);
-                                }
-
-                                // Handle winning move
-                                if (isWinningMove) {
-                                    showWinnerScreen();
-                                } else {
-                                    // Re-enable roll button after animation completes
-                                    animationInProgress = false;
-                                    if (rollDiceButton != null) {
-                                        rollDiceButton.setDisable(false);
-                                    }
-                                }
-                            }
-                        },
-                        new KeyValue(playerToken.centerXProperty(), centerX),
-                        new KeyValue(playerToken.centerYProperty(), centerY)
-                );
-
-                timeline.getKeyFrames().addAll(hopUpFrame, landFrame);
-
-                // Increment the time point for the next hop
+        // Determine if moving forwards or backwards
+        if (endIndex > startIndex) {
+            // Move forward
+            for (int i = startIndex + 1; i <= endIndex; i++) {
+                animateStep(timeline, i, endIndex, trackPositions, hopDuration, timePoint, isWinningMove);
+                timePoint += hopDuration;
+            }
+        }
+        else {
+            // Move backward
+            for (int i = startIndex - 1; i >= endIndex; i--) {
+                animateStep(timeline, i, endIndex, trackPositions, hopDuration, timePoint, isWinningMove);
                 timePoint += hopDuration;
             }
         }
 
         // Play the animation
         timeline.play();
+        return timeline;
+    }
+
+    private void animateStep(Timeline timeline, int index, int endIndex, List<int[]> trackPositions,
+                             double hopDuration, double timePoint, boolean isWinningMove) {
+        // Calculate positions
+        int[] position = trackPositions.get(index);
+        int row = position[0];
+        int col = position[1];
+
+        BoardSpace space = boardGrid.getBoardSpace(row, col);
+        if (space != null) {
+            // Get the parent of the player token
+            Node tokenParent = playerToken.getParent();
+
+            // Get the actual bounds of the space in scene coordinates
+            Bounds spaceBounds = space.localToScene(space.getBoundsInLocal());
+            Point2D spaceCenter = tokenParent.sceneToLocal(
+                    spaceBounds.getMinX() + spaceBounds.getWidth()/2,
+                    spaceBounds.getMinY() + spaceBounds.getHeight()/2
+            );
+
+            // Use these exact coordinates for positioning
+            double centerX = spaceCenter.getX();
+            double centerY = spaceCenter.getY();
+
+            // Create final copies for event handler
+            final double finalCenterX = centerX;
+            final double finalCenterY = centerY;
+            final int currentIndex = index;
+
+            // Add hop up animation
+            KeyFrame hopUpFrame = new KeyFrame(
+                    Duration.seconds(timePoint + hopDuration/3),
+                    new KeyValue(playerToken.centerXProperty(), centerX),
+                    new KeyValue(playerToken.centerYProperty(), centerY - 20) // Hop up 20 pixels
+            );
+
+            // Add landing animation
+            KeyFrame landFrame = new KeyFrame(
+                    Duration.seconds(timePoint + hopDuration),
+                    event -> {
+                        if (currentIndex == endIndex) {
+                            // Update the current index when this frame finishes
+                            currentTrackIndex = currentIndex;
+                            playerToken.setCenterX(finalCenterX);
+                            playerToken.setCenterY(finalCenterY);
+
+                            // Update player object location
+                            if (currentPlayer != null) {
+                                currentPlayer.setLocation(position);
+                            }
+
+                            // Handle winning move
+                            if (isWinningMove) {
+                                showWinnerScreen();
+                            } else {
+                                // Re-enable roll button after animation completes
+                                animationInProgress = false;
+                                if (rollDiceButton != null) {
+                                    rollDiceButton.setDisable(false);
+                                }
+                            }
+                        }
+                    },
+                    new KeyValue(playerToken.centerXProperty(), centerX),
+                    new KeyValue(playerToken.centerYProperty(), centerY)
+            );
+
+            timeline.getKeyFrames().addAll(hopUpFrame, landFrame);
+        }
     }
 
     private void showWinnerScreen() {
@@ -257,4 +353,8 @@ public class GameController {
     public GameTrack getSelectedTrack() {
         return selectedTrack;
     }
+
+    public String getSpecialMessage() { return specialMessage; }
+
+    public void setSpecialMessage(String specialMessage) { this.specialMessage = specialMessage; }
 }
