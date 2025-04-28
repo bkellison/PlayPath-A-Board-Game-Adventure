@@ -46,11 +46,11 @@ public class BoardGrid {
                 boardSpaces[row][col] = space;
 
                 // Add space number for reference
-                int spaceNumber = getSpaceNumber(row, col);
-                Text spaceNumberText = new Text(String.valueOf(spaceNumber));
-                spaceNumberText.setStyle("-fx-font-size: 12px;");
+                //int spaceNumber = getSpaceNumber(row, col);
+                //Text spaceNumberText = new Text(String.valueOf(spaceNumber));
+                //spaceNumberText.setStyle("-fx-font-size: 12px;");
 
-                StackPane spaceWithNumber = new StackPane(space, spaceNumberText);
+                StackPane spaceWithNumber = new StackPane(space);
                 boardGrid.add(spaceWithNumber, col, row);
             }
         }

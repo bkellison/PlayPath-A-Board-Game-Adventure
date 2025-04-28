@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.ControllerTests;
 
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
