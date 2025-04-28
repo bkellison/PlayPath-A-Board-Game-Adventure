@@ -270,6 +270,9 @@ public class GameBoard {
                     // This means this space is a special space, and therefore needs to load in an image
                     BoardSpace space = boardGrid.getBoardSpace(row, col);
                     space.addImageToSpace(specialSpaces.get(key), true);
+
+                    // Additionally, set this space's isSpecial field to true
+                    space.setSpecial(true);
                 }
             }
         }

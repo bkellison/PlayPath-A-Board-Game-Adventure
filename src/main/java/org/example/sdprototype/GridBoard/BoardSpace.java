@@ -16,6 +16,7 @@ public class BoardSpace extends Region {
     private boolean isHighlighted = false;
     private Color highlightColor = null;
     private ImageView imageView;    // Will hold images for non-track spaces
+    private boolean isSpecial = false;  // Will be changed to true if space is a special space
 
     public BoardSpace(int row, int col, int trackNumber, boolean isActive) {
         this.row = row;
@@ -103,4 +104,8 @@ public class BoardSpace extends Region {
     public Point2D getRightMiddle() {
         return new Point2D(getLayoutX() + getWidth(), getLayoutY() + getHeight() / 2);
     }
+
+    public boolean isSpecial() { return isSpecial; }
+
+    public void setSpecial(boolean special) { this.isSpecial = special; }
 }
