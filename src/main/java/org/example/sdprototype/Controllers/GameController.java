@@ -17,6 +17,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import org.example.sdprototype.Communicator.ArduinoCommunicator;
 import org.example.sdprototype.GameLogic.Player;
 import org.example.sdprototype.GridBoard.BoardGrid;
 import org.example.sdprototype.GridBoard.BoardSpace;
@@ -40,6 +41,7 @@ public class GameController {
     private int[] specialActions;
     private String[] messages;
     private String specialMessage = null;
+    private ArduinoCommunicator arduinoCommunicator;
 
     // Arrays that hold the indices of the special spaces for each theme
     private final int[] specialIdx1 = { 3, 9, 13, 19 };
@@ -65,6 +67,9 @@ public class GameController {
         this.boardGrid = boardGrid;
         this.selectedTrack = track;
 
+        // Initialize arduino communicator with the proper COM port
+        arduinoCommunicator = new ArduinoCommunicator("COM3");
+
         // Based on the game mode chosen, set the special spaces indices
         String trackName = selectedTrack.getName();
         if (Objects.equals(trackName, "Track 1")) {
@@ -72,18 +77,30 @@ public class GameController {
             this.specialActions = specialActions1;
             this.messages = specialMessage1;
 
-            // DEBUGGING:
-            System.out.println("Set special spaces, actions, and messages for track one.");
+            // Tell arduino game mode is 1
+            if (arduinoCommunicator != null) {
+                arduinoCommunicator.sendGameMode(1);
+            }
         }
         else if (Objects.equals(trackName, "Track 2")) {
             this.specialIdx = specialIdx2;
             this.specialActions = specialActions2;
             this.messages = specialMessage2;
+
+            // Tell arduino game mode is 2
+            if (arduinoCommunicator != null) {
+                arduinoCommunicator.sendGameMode(2);
+            }
         }
         else if (Objects.equals(trackName, "Track 3")) {
             this.specialIdx = specialIdx3;
             this.specialActions = specialActions3;
             this.messages = specialMessage3;
+
+            // Tell arduino game mode is 3
+            if (arduinoCommunicator != null) {
+                arduinoCommunicator.sendGameMode(3);
+            }
         }
 
         // Create the track display pane
@@ -193,6 +210,11 @@ public class GameController {
             System.out.println("Message: " + specialMsg);
             setSpecialMessage(specialMsg);
 
+            // Send the initial target index and final target index to the arduino via arduinoCommunicator
+            if (arduinoCommunicator != null) {
+                arduinoCommunicator.sendIndices(targetIndex, finalTargetIndex);
+            }
+
             moveTimeline.setOnFinished(event -> {
                 // Pause for a short delay before triggering second animation
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
@@ -209,7 +231,12 @@ public class GameController {
             });
         }
         else {
-            // No special move, just re-enable after first move finishes and set the special message to null (should still be null if reaches this statement)
+            // No special move: send indices to arduino, where initial and final target indices are the same
+            if (arduinoCommunicator != null) {
+                arduinoCommunicator.sendIndices(targetIndex, targetIndex);
+            }
+
+            // Now just re-enable after first move finishes and set the special message to null (should still be null if reaches this statement)
             setSpecialMessage(specialMsg);
             moveTimeline.setOnFinished(event -> {
                 animationInProgress = false;

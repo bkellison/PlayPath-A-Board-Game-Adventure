@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.ClassTests;
 
 import org.example.sdprototype.GameLogic.Card;
 import org.example.sdprototype.GameLogic.Dice;

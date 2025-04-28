@@ -1,4 +1,4 @@
-package org.example.sdprototype;
+package org.example.sdprototype.ClassTests;
 import org.example.sdprototype.GameLogic.Game;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
