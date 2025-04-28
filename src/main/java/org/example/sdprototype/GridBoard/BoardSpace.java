@@ -23,9 +23,18 @@ public class BoardSpace extends Region {
         this.col = col;
         this.trackNumber = trackNumber;
 
-        shape = new Rectangle(80, 80, DEFAULT_COLOR);
-        shape.setStroke(Color.BLACK);
-        shape.setStrokeWidth(1);
+        shape = new Rectangle(80, 80);
+
+        // For Track 1, make the spaces fully transparent
+        if (trackNumber == 1) {
+            shape.setFill(Color.TRANSPARENT);
+            shape.setStroke(Color.TRANSPARENT);
+            shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
+        } else {
+            shape.setFill(DEFAULT_COLOR);
+            shape.setStroke(Color.BLACK);
+            shape.setStrokeWidth(1);
+        }
 
         getChildren().add(shape);
 
@@ -47,6 +56,7 @@ public class BoardSpace extends Region {
                 imageView = new ImageView(image);
                 imageView.setFitWidth(this.getWidth());
                 imageView.setFitHeight(this.getHeight());
+                imageView.setPreserveRatio(false);
 
                 // Bind the image size to the BoardSpace size
                 widthProperty().addListener((obs, oldVal, newVal) -> imageView.setFitWidth(newVal.doubleValue()));
@@ -63,17 +73,33 @@ public class BoardSpace extends Region {
     }
 
     public void setDefaultColor() {
-        shape.setFill(DEFAULT_COLOR);
+        // For Track 1, keep fully transparent
+        if (trackNumber == 1) {
+            shape.setFill(Color.TRANSPARENT);
+            shape.setStroke(Color.TRANSPARENT);
+            shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
+        } else {
+            shape.setFill(DEFAULT_COLOR);
+        }
         isHighlighted = false;
     }
 
     public void setHighlighted(boolean highlighted, Color color) {
         this.isHighlighted = highlighted;
         this.highlightColor = color;
-        if (highlighted && color != null) {
-            shape.setFill(color);
+
+        // For Track 1, make it completely invisible even when highlighted
+        if (trackNumber == 1) {
+            shape.setFill(Color.TRANSPARENT);
+            shape.setStroke(Color.TRANSPARENT);
+            shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
         } else {
-            setDefaultColor();
+            // Existing logic for other tracks
+            if (highlighted && color != null) {
+                shape.setFill(color);
+            } else {
+                setDefaultColor();
+            }
         }
     }
 

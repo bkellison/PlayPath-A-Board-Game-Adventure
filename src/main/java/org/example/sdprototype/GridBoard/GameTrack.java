@@ -49,7 +49,8 @@ public class GameTrack {
 
     public static GameTrack createTrack1() {
         int[] spaces = {33, 32, 17, 16, 1, 2, 3, 14, 19, 30, 35, 36, 37, 38, 27, 22, 11, 6, 7, 8, 9, 24, 25, 40};
-        return new GameTrack("Track 1", spaces, Color.GREEN);
+        // Make Track 1 completely transparent
+        return new GameTrack("Track 1", spaces, Color.TRANSPARENT);
     }
 
     public static GameTrack createTrack2() {
