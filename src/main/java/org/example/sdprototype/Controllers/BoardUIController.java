@@ -16,6 +16,9 @@ public class BoardUIController {
     @FXML
     private Text playerInfoLabel;
 
+    @FXML
+    private Text diceResultText;
+
     private GameController gameController;
     private GameTrack selectedTrack;
 
@@ -39,7 +42,8 @@ public class BoardUIController {
             int diceRoll = (int)(Math.random() * 6) + 1;
 
             // Display dice result
-            Text diceResultText = new Text("Rolled: " + diceRoll);
+            System.out.println("Rolled value: " + diceRoll);
+            diceResultText.setText("Roll Dice: " + diceRoll);
 
             // Move player based on dice roll
             gameController.movePlayer(diceRoll, rollDiceButton);

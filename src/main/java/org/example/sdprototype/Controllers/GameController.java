@@ -119,6 +119,7 @@ public class GameController {
 
         // Calculate target position index
         int targetIndex = Math.min(currentTrackIndex + steps, trackPositions.size() - 1);
+        System.out.println("Target index: " + targetIndex);
 
         // Check if player has reached or passed the end
         if (targetIndex >= trackPositions.size() - 1) {

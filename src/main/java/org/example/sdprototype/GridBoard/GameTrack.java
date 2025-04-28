@@ -49,16 +49,16 @@ public class GameTrack {
 
     public static GameTrack createTrack1() {
         int[] spaces = {33, 32, 17, 16, 1, 2, 3, 14, 19, 30, 35, 36, 37, 38, 27, 22, 11, 6, 7, 8, 9, 24, 25, 40};
-        return new GameTrack("Track 1", spaces, Color.BLUE);
+        return new GameTrack("Track 1", spaces, Color.GREEN);
     }
 
     public static GameTrack createTrack2() {
         int[] spaces = {33, 34, 31, 18, 15, 14, 13, 20, 29, 28, 27, 22, 11, 10, 9, 8};
-        return new GameTrack("Track 2", spaces, Color.RED);
+        return new GameTrack("Track 2", spaces, Color.CYAN);
     }
 
     public static GameTrack createTrack3() {
         int[] spaces = {8, 9, 24, 23, 22, 11, 12, 13, 14, 15, 18, 31, 30, 29, 36, 37, 38, 39, 40};
-        return new GameTrack("Track 3", spaces, Color.GREEN);
+        return new GameTrack("Track 3", spaces, Color.RED);
     }
 }
