@@ -47,6 +47,15 @@ public class BoardUIController {
 
             // Move player based on dice roll
             gameController.movePlayer(diceRoll, rollDiceButton);
+
+            // Get the message to be displayed if the user has landed on a special space:
+            String message = gameController.getSpecialMessage();
+            if (message != null) {
+                System.out.println("UI controller has received message: " + message);
+            }
+            else {
+                System.out.println("UI controller has received NO special message");
+            }
         }
     }
 

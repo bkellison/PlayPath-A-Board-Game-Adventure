@@ -169,6 +169,7 @@ public class GameController {
 
         // Determine if this move results in the player winning
         boolean isWinningMove = (targetIndex >= trackPositions.size() - 1);
+        System.out.println("Is winning move: " + isWinningMove);
 
         // Get the timeline of the animation of player movement
         Timeline moveTimeline = animatePlayerMovement(currentTrackIndex, targetIndex, trackPositions, isWinningMove);
@@ -203,7 +204,8 @@ public class GameController {
             });
         }
         else {
-            // No special move, just re-enable after first move finishes
+            // No special move, just re-enable after first move finishes and set the special message to null (should still be null if reaches this statement)
+            setSpecialMessage(specialMsg);
             moveTimeline.setOnFinished(event -> {
                 animationInProgress = false;
                 if (rollDiceButton != null) {
@@ -225,80 +227,20 @@ public class GameController {
 
         // Duration for each hop
         double hopDuration = 0.7; // seconds
-
         double timePoint = 0;
 
-        // For each step in the path
-        for (int i = startIndex + 1; i <= endIndex; i++) {
-            int index = i;
-
-            // Calculate positions
-            int[] position = trackPositions.get(index);
-            int row = position[0];
-            int col = position[1];
-
-            BoardSpace space = boardGrid.getBoardSpace(row, col);
-            if (space != null) {
-                // Get the parent of the player token
-                Node tokenParent = playerToken.getParent();
-
-                // Get the actual bounds of the space in scene coordinates
-                Bounds spaceBounds = space.localToScene(space.getBoundsInLocal());
-                Point2D spaceCenter = tokenParent.sceneToLocal(
-                        spaceBounds.getMinX() + spaceBounds.getWidth()/2,
-                        spaceBounds.getMinY() + spaceBounds.getHeight()/2
-                );
-
-                // Use these exact coordinates for positioning
-                double centerX = spaceCenter.getX();
-                double centerY = spaceCenter.getY();
-
-                // Create final copies for event handler
-                final double finalCenterX = centerX;
-                final double finalCenterY = centerY;
-                final int currentIndex = index;
-
-                // Add hop up animation
-                KeyFrame hopUpFrame = new KeyFrame(
-                        Duration.seconds(timePoint + hopDuration/3),
-                        new KeyValue(playerToken.centerXProperty(), centerX),
-                        new KeyValue(playerToken.centerYProperty(), centerY - 20) // Hop up 20 pixels
-                );
-
-                // Add landing animation
-                KeyFrame landFrame = new KeyFrame(
-                        Duration.seconds(timePoint + hopDuration),
-                        event -> {
-                            if (currentIndex == endIndex) {
-                                // Update the current index when this frame finishes
-                                currentTrackIndex = currentIndex;
-                                playerToken.setCenterX(finalCenterX);
-                                playerToken.setCenterY(finalCenterY);
-
-                                // Update player object location
-                                if (currentPlayer != null) {
-                                    currentPlayer.setLocation(position);
-                                }
-
-                                // Handle winning move
-                                if (isWinningMove) {
-                                    showWinnerScreen();
-                                } else {
-                                    // Re-enable roll button after animation completes
-                                    animationInProgress = false;
-                                    if (rollDiceButton != null) {
-                                        rollDiceButton.setDisable(false);
-                                    }
-                                }
-                            }
-                        },
-                        new KeyValue(playerToken.centerXProperty(), centerX),
-                        new KeyValue(playerToken.centerYProperty(), centerY)
-                );
-
-                timeline.getKeyFrames().addAll(hopUpFrame, landFrame);
-
-                // Increment the time point for the next hop
+        // Determine if moving forwards or backwards
+        if (endIndex > startIndex) {
+            // Move forward
+            for (int i = startIndex + 1; i <= endIndex; i++) {
+                animateStep(timeline, i, endIndex, trackPositions, hopDuration, timePoint, isWinningMove);
+                timePoint += hopDuration;
+            }
+        }
+        else {
+            // Move backward
+            for (int i = startIndex - 1; i >= endIndex; i--) {
+                animateStep(timeline, i, endIndex, trackPositions, hopDuration, timePoint, isWinningMove);
                 timePoint += hopDuration;
             }
         }
@@ -306,6 +248,76 @@ public class GameController {
         // Play the animation
         timeline.play();
         return timeline;
+    }
+
+    private void animateStep(Timeline timeline, int index, int endIndex, List<int[]> trackPositions,
+                             double hopDuration, double timePoint, boolean isWinningMove) {
+        // Calculate positions
+        int[] position = trackPositions.get(index);
+        int row = position[0];
+        int col = position[1];
+
+        BoardSpace space = boardGrid.getBoardSpace(row, col);
+        if (space != null) {
+            // Get the parent of the player token
+            Node tokenParent = playerToken.getParent();
+
+            // Get the actual bounds of the space in scene coordinates
+            Bounds spaceBounds = space.localToScene(space.getBoundsInLocal());
+            Point2D spaceCenter = tokenParent.sceneToLocal(
+                    spaceBounds.getMinX() + spaceBounds.getWidth()/2,
+                    spaceBounds.getMinY() + spaceBounds.getHeight()/2
+            );
+
+            // Use these exact coordinates for positioning
+            double centerX = spaceCenter.getX();
+            double centerY = spaceCenter.getY();
+
+            // Create final copies for event handler
+            final double finalCenterX = centerX;
+            final double finalCenterY = centerY;
+            final int currentIndex = index;
+
+            // Add hop up animation
+            KeyFrame hopUpFrame = new KeyFrame(
+                    Duration.seconds(timePoint + hopDuration/3),
+                    new KeyValue(playerToken.centerXProperty(), centerX),
+                    new KeyValue(playerToken.centerYProperty(), centerY - 20) // Hop up 20 pixels
+            );
+
+            // Add landing animation
+            KeyFrame landFrame = new KeyFrame(
+                    Duration.seconds(timePoint + hopDuration),
+                    event -> {
+                        if (currentIndex == endIndex) {
+                            // Update the current index when this frame finishes
+                            currentTrackIndex = currentIndex;
+                            playerToken.setCenterX(finalCenterX);
+                            playerToken.setCenterY(finalCenterY);
+
+                            // Update player object location
+                            if (currentPlayer != null) {
+                                currentPlayer.setLocation(position);
+                            }
+
+                            // Handle winning move
+                            if (isWinningMove) {
+                                showWinnerScreen();
+                            } else {
+                                // Re-enable roll button after animation completes
+                                animationInProgress = false;
+                                if (rollDiceButton != null) {
+                                    rollDiceButton.setDisable(false);
+                                }
+                            }
+                        }
+                    },
+                    new KeyValue(playerToken.centerXProperty(), centerX),
+                    new KeyValue(playerToken.centerYProperty(), centerY)
+            );
+
+            timeline.getKeyFrames().addAll(hopUpFrame, landFrame);
+        }
     }
 
     private void showWinnerScreen() {
