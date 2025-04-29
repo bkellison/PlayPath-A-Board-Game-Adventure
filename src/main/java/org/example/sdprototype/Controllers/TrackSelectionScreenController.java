@@ -2,11 +2,11 @@ package org.example.sdprototype.Controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 import org.example.sdprototype.GridBoard.GameBoard;
 import org.example.sdprototype.GridBoard.GameTrack;
+import org.example.sdprototype.Communicator.ArduinoConnector;
 
 public class TrackSelectionScreenController {
     @FXML
@@ -33,6 +33,9 @@ public class TrackSelectionScreenController {
         selectedTrack = GameTrack.createTrack1();
         highlightSelectedButton(track1Button, track2Button, track3Button);
         startGameButton.setDisable(false);
+
+        // Send game mode to arduino for LED light behavior
+        ArduinoConnector.sendGameMode(1);
     }
 
     @FXML
@@ -40,6 +43,9 @@ public class TrackSelectionScreenController {
         selectedTrack = GameTrack.createTrack2();
         highlightSelectedButton(track2Button, track1Button, track3Button);
         startGameButton.setDisable(false);
+
+        // Send game mode to arduino for LED light behavior
+        ArduinoConnector.sendGameMode(2);
     }
 
     @FXML
@@ -47,6 +53,9 @@ public class TrackSelectionScreenController {
         selectedTrack = GameTrack.createTrack3();
         highlightSelectedButton(track3Button, track1Button, track2Button);
         startGameButton.setDisable(false);
+
+        // Send game mode to arduino for LED light behavior
+        ArduinoConnector.sendGameMode(3);
     }
 
     @FXML

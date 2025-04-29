@@ -9,8 +9,51 @@ import java.util.Scanner;
 public class ArduinoConnector {
 
     private static final String ARDUINO_IP = "http://172.20.10.6";
-    private static final int PORT = 80;
 
+    // Function to send HTTP request to arduino: called within helper functions to send specific requests
+    private static void sendRequest(String urlString) {
+        try {
+            // Form the URL from the url string, and attempt to open an HTTP connection, setting the method to "GET"
+            URL url = new URL(urlString);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // Get response code to ensure connection successful
+            System.out.println("Sending request to " + urlString);
+            int responseCode = connection.getResponseCode();
+            System.out.println("Response Code : " + responseCode);
+
+            // Create buffered reader for input stream
+            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String inputLine;
+            System.out.println("Response from Arduino:");
+            while ((inputLine = in.readLine()) != null) {
+                System.out.println(inputLine);
+            }
+            // Close connection when received reponse and done reading
+            in.close();
+            connection.disconnect();
+        }
+        catch (Exception e) {
+            System.out.println("Error sending request to Arduino:");
+            e.printStackTrace();
+        }
+    }
+
+    // Helper function to send the selected game mode to the arduino
+    public static void sendGameMode(int mode) {
+        // Form url string with game mode as a query parameter in the HTTP request
+        String url = ARDUINO_IP + "/setMode?mode=" + mode;
+        sendRequest(url);
+    }
+
+    // Helper function to send the initial and final target indices for board spaces to the arduino
+    public static void sendTargetIndices(int initial, int fin) {
+        String url = ARDUINO_IP + "/setTargets?initial=" + initial + "&final=" + fin;
+        sendRequest(url);
+    }
+
+    // MAIN METHOD FOR TESTING LED BEHAVIOR
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
 
