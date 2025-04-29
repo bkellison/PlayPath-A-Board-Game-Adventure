@@ -241,7 +241,7 @@ public class GameBoard {
         else if (Objects.equals(trackName, "Track 3")) {
             System.out.println("Loading theme 3 images");
             imagesArray = theme3;
-            backgroundImagePath = "";
+            backgroundImagePath = "/org/example/sdprototype/images/Theme3/Board3.png";
             specialSpaces = specialSpacesTheme3;
         }
 

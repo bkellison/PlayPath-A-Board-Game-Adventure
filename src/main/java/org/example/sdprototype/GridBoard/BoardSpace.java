@@ -25,8 +25,8 @@ public class BoardSpace extends Region {
 
         shape = new Rectangle(80, 80);
 
-        // For Track 1, make the spaces fully transparent
-        if (trackNumber == 1) {
+        // For all tracks, make the spaces fully transparent
+        if (trackNumber == 1 || trackNumber == 2 || trackNumber == 3) {
             shape.setFill(Color.TRANSPARENT);
             shape.setStroke(Color.TRANSPARENT);
             shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
@@ -73,14 +73,8 @@ public class BoardSpace extends Region {
     }
 
     public void setDefaultColor() {
-        // For Track 1, keep fully transparent
-        if (trackNumber == 1) {
-            shape.setFill(Color.TRANSPARENT);
-            shape.setStroke(Color.TRANSPARENT);
-            shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
-        } else {
-            shape.setFill(DEFAULT_COLOR);
-        }
+        // Set default color regardless of track number
+        shape.setFill(DEFAULT_COLOR);
         isHighlighted = false;
     }
 
@@ -88,18 +82,20 @@ public class BoardSpace extends Region {
         this.isHighlighted = highlighted;
         this.highlightColor = color;
 
-        // For Track 1, make it completely invisible even when highlighted
-        if (trackNumber == 1) {
-            shape.setFill(Color.TRANSPARENT);
-            shape.setStroke(Color.TRANSPARENT);
-            shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
-        } else {
-            // Existing logic for other tracks
-            if (highlighted && color != null) {
-                shape.setFill(color);
+        // Use the highlight color if highlighted, otherwise use default
+        if (highlighted && color != null) {
+            // Special case for Track 1 which should be transparent
+            if (color.equals(Color.TRANSPARENT)) {
+                shape.setFill(Color.TRANSPARENT);
+                shape.setStroke(Color.TRANSPARENT);
+                shape.setOpacity(0); // Set opacity to 0 to make it completely invisible
             } else {
-                setDefaultColor();
+                shape.setFill(color);
+                shape.setStroke(Color.BLACK);
+                shape.setOpacity(1);
             }
+        } else {
+            setDefaultColor();
         }
     }
 
