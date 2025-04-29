@@ -10,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
-import org.example.sdprototype.Communicator.ArduinoCommunicator;
 import org.example.sdprototype.Controllers.GameController;
 import org.example.sdprototype.Controllers.BoardUIController;
 
