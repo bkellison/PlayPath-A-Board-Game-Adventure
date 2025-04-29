@@ -5,6 +5,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 public class BoardGrid {
@@ -20,6 +21,9 @@ public class BoardGrid {
         boardGrid.setPadding(new Insets(20));
         boardGrid.setHgap(5);
         boardGrid.setVgap(5);
+
+        // Make grid transparent to allow background image to show through
+        boardGrid.setStyle("-fx-background-color: transparent;");
 
         // Create board spaces
         boolean[][] trackPattern = createTrackPattern();
@@ -45,7 +49,7 @@ public class BoardGrid {
                 space.setPrefSize(80, 80);
                 boardSpaces[row][col] = space;
 
-                // Add space number for reference
+                // Add space number for reference (optional - can be commented out)
                 //int spaceNumber = getSpaceNumber(row, col);
                 //Text spaceNumberText = new Text(String.valueOf(spaceNumber));
                 //spaceNumberText.setStyle("-fx-font-size: 12px;");
@@ -112,7 +116,14 @@ public class BoardGrid {
                 int row = position[0];
                 int col = position[1];
                 if (row >= 0 && row < 5 && col >= 0 && col < 8) {
-                    boardSpaces[row][col].setHighlighted(true, track.getColor());
+                    // For Track 1, use completely transparent highlighting
+                    if (track.getName().equals("Track 1")) {
+                        // Make Track 1 completely invisible
+                        boardSpaces[row][col].setOpacity(0);
+                        boardSpaces[row][col].setHighlighted(true, Color.TRANSPARENT);
+                    } else {
+                        boardSpaces[row][col].setHighlighted(true, track.getColor());
+                    }
                 }
             }
         }

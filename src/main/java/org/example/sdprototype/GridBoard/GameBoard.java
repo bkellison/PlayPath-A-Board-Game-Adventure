@@ -1,6 +1,7 @@
 package org.example.sdprototype.GridBoard;
 
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -9,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.example.sdprototype.Communicator.ArduinoCommunicator;
 import org.example.sdprototype.Controllers.GameController;
 import org.example.sdprototype.Controllers.BoardUIController;
 
@@ -22,62 +24,64 @@ public class GameBoard {
     private Stage mainStage;
     private GameTrack selectedTrack;
 
-    // Arrays holding images for each theme
+    // Arrays holding images for each theme - all commented out except for board1
     private final String[] theme1 = {
-            "/org/example/sdprototype/images/Theme1/Donkey.png",
+            // "/org/example/sdprototype/images/Theme1/Donkey.png",
             null,
             null,
             null,
             null,
-            "/org/example/sdprototype/images/Theme1/BewareOfOgreSign.png",
+            // "/org/example/sdprototype/images/Theme1/BewareOfOgreSign.png",
             null,
             null,
             null,
             null,
             null,
             null,
-            "/org/example/sdprototype/images/Theme1/SignPost.png",
+            // "/org/example/sdprototype/images/Theme1/SignPost.png",
             null,
-            "/org/example/sdprototype/images/Theme1/DulocSign.png",
+            // "/org/example/sdprototype/images/Theme1/DulocSign.png",
             null,
     };
 
     private final String[] theme2 = {
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
-            "/org/example/sdprototype/images/Theme2/--.png",
+            // "/org/example/sdprototype/images/Theme2/--.png",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
     };
 
     private final String[] theme3 = {
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
-            "/org/example/sdprototype/images/Theme3/--.png",
+            // "/org/example/sdprototype/images/Theme3/--.png",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
     };
 
     // Hash map to map special spaces to their images for each theme, to be set in constructor
@@ -98,14 +102,20 @@ public class GameBoard {
     private final String[] specialSpaceCoordsTheme2 = {};
     private final String[] specialSpaceCoordsTheme3 = {};
 
-    // Arrays for holding image paths corresponding to special squares
+    // Arrays for holding image paths corresponding to special squares - all commented out
     private final String[] specialImagesTheme1 = {
-            "/org/example/sdprototype/images/Theme1/LordFarquaad.png",
-            "/org/example/sdprototype/images/Theme1/Fiona.png",
-            "/org/example/sdprototype/images/Theme1/DulocTower.png",
-            "/org/example/sdprototype/images/Theme1/Dragon.png",
-            "/org/example/sdprototype/images/Theme1/GingerbreadMan.png",
-            "/org/example/sdprototype/images/Theme1/Shrek.png",
+            // "/org/example/sdprototype/images/Theme1/LordFarquaad.png",
+            null,
+            // "/org/example/sdprototype/images/Theme1/Fiona.png",
+            null,
+            // "/org/example/sdprototype/images/Theme1/DulocTower.png",
+            null,
+            // "/org/example/sdprototype/images/Theme1/Dragon.png",
+            null,
+            // "/org/example/sdprototype/images/Theme1/GingerbreadMan.png",
+            null,
+            // "/org/example/sdprototype/images/Theme1/Shrek.png",
+            null,
     };
 
     private final String[] specialImagesTheme2 = {};
@@ -140,12 +150,14 @@ public class GameBoard {
         try {
             // Create the main game layout
             BorderPane mainLayout = new BorderPane();
+            // Make the BorderPane resize with the stage
+            mainLayout.prefWidthProperty().bind(primaryStage.widthProperty());
+            mainLayout.prefHeightProperty().bind(primaryStage.heightProperty());
 
             // Initialize
             boardGrid = new BoardGrid();
             GridPane grid = boardGrid.createGameBoard();
             gameController = new GameController(boardGrid, selectedTrack);
-
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/BoardUI.fxml"));
             Parent boardUIRoot = loader.load();
@@ -170,8 +182,11 @@ public class GameBoard {
             String backgroundImagePath = loadImages();
             Image backgroundImage = new Image(String.valueOf(getClass().getResource(backgroundImagePath)));
             ImageView backgroundImageView = new ImageView(backgroundImage);
-            backgroundImageView.setFitWidth(1225);
-            backgroundImageView.setFitHeight(880);
+
+            // Make the image view resize with the container
+            backgroundImageView.setPreserveRatio(true);
+            backgroundImageView.fitWidthProperty().bind(mainLayout.widthProperty());
+            backgroundImageView.fitHeightProperty().bind(mainLayout.heightProperty());
 
             // Add background image to the stack pane
             gameAreaStack.getChildren().add(backgroundImageView);
@@ -212,13 +227,16 @@ public class GameBoard {
         if (Objects.equals(trackName, "Track 1")) {
             System.out.print("Loading theme 1 images");
             imagesArray = theme1;
-            backgroundImagePath = "/org/example/sdprototype/images/Theme1/SwampHouse.png";
+            // Keep only the board1 background image path
+            backgroundImagePath = "/org/example/sdprototype/images/Theme1/board1.png";
             specialSpaces = specialSpacesTheme1;
         }
         else if (Objects.equals(trackName, "Track 2")) {
             System.out.println("Loading theme 2 images");
             imagesArray = theme2;
-            backgroundImagePath = "/org/example/sdprototype/images/Theme2/OceanBackground.png";
+            // Comment out other background images
+            // backgroundImagePath = "/org/example/sdprototype/images/Theme2/OceanBackground.png";
+            backgroundImagePath = "";
             specialSpaces = specialSpacesTheme2;
         }
         else if (Objects.equals(trackName, "Track 3")) {
@@ -266,7 +284,9 @@ public class GameBoard {
 
                     imageIndex++;
 
-                } else if (specialSpaces.containsKey(key)) {
+                }
+                /* Comment out special space image loading
+                else if (specialSpaces.containsKey(key)) {
                     // This means this space is a special space, and therefore needs to load in an image
                     BoardSpace space = boardGrid.getBoardSpace(row, col);
                     space.addImageToSpace(specialSpaces.get(key), true);
@@ -274,10 +294,11 @@ public class GameBoard {
                     // Additionally, set this space's isSpecial field to true
                     space.setSpecial(true);
                 }
+                */
             }
         }
 
-        // Finally, return the string for the path to the background image
+        // Return the background image path
         return backgroundImagePath;
     }
 }
