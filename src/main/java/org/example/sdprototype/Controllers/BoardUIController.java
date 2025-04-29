@@ -90,4 +90,17 @@ public class BoardUIController {
     public Button getRollDiceButton() {
         return rollDiceButton;
     }
+
+    public Text getTrackInfoLabel() { return trackInfoLabel; }
+    public void setTrackInfoLabel(Text trackInfoLabel) { this.trackInfoLabel = trackInfoLabel; }
+
+    public Text getPlayerInfoLabel() { return playerInfoLabel; }
+    public void setPlayerInfoLabel(Text playerInfoLabel) { this.playerInfoLabel = playerInfoLabel; }
+
+    public Text getDiceResultText() { return diceResultText; }
+    public void setDiceResultText(Text diceResultText) { this.diceResultText = diceResultText; }
+
+    public Label getMessageLabel() { return messageLabel; }
+    public void setMessageLabel(Label messageLabel) { this.messageLabel = messageLabel; }
+
 }

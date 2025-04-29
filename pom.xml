@@ -66,6 +66,12 @@
             <version>5.4.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>17.0.6</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -95,6 +101,7 @@
                             <noManPages>true</noManPages>
                             <stripDebug>true</stripDebug>
                             <noHeaderFiles>true</noHeaderFiles>
+                            <modules>javafx.controls,javafx.fxml,javafx.swing</modules>
                         </configuration>
                     </execution>
                 </executions>
