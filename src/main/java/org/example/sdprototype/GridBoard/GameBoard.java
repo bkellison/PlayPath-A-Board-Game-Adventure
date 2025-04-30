@@ -158,7 +158,21 @@ public class GameBoard {
             GridPane grid = boardGrid.createGameBoard();
             gameController = new GameController(boardGrid, selectedTrack);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/BoardUI.fxml"));
+            // Determine which FXML to load based on selected track
+            String fxmlPath = "/BoardUI.fxml"; // Default UI
+
+            if (selectedTrack != null) {
+                String trackName = selectedTrack.getName();
+                if (Objects.equals(trackName, "Track 1")) {
+                    fxmlPath = "/BoardUI_Shrek.fxml";
+                } else if (Objects.equals(trackName, "Track 2")) {
+                    fxmlPath = "/BoardUI_Rainforest.fxml";
+                } else if (Objects.equals(trackName, "Track 3")) {
+                    fxmlPath = "/BoardUI_Pirate.fxml";
+                }
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
             Parent boardUIRoot = loader.load();
             Object controller = loader.getController();
 
@@ -169,6 +183,10 @@ public class GameBoard {
 
                 // Connect the controller with the game controller
                 gameController.setRollDiceButton(boardUIController.getRollDiceButton());
+                gameController.setDiceResultText(boardUIController.getDiceResultText());
+
+                // Force initialization of the dice animator after setting everything up
+                boardUIController.manuallyInitializeDiceAnimator();
             } else {
                 throw new ClassCastException("Expected BoardUIController but got " +
                         (controller != null ? controller.getClass().getName() : "null"));

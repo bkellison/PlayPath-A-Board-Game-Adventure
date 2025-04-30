@@ -62,9 +62,9 @@ public class GameController {
 
     private final String[] specialMessage2 = {
             "Ribbit! A mischievous frog startles you — leap forward one space!",
-            "Hisss! A sly snake slithers into your path — move back one space!",
-            "Squawk! A chatty parrot distracts you with gossip — move forward one space!",
-            "Caw! A nosy toucan pecks at your supplies — lose time and move back one space!",
+            "Hisss! A sly snake slithers into your path — move forward one space!",
+            "Squawk! A chatty parrot distracts you with gossip — move back one space!",
+            "Caw! A nosy toucan pecks at your supplies — move forward one space!",
             "Ooh ooh aah aah! A playful monkey steals your hat — swing back one space to chase it!"
     };
     private final String[] specialMessage3 = {

@@ -61,7 +61,7 @@
                     </font>
                 </Text>
 
-                <StackPane prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #3e5520; -fx-background-radius: 10; -fx-border-color: #d9ed92; -fx-border-width: 2; -fx-border-radius: 10;">
+                <StackPane fx:id="dicePane" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #3e5520; -fx-background-radius: 10; -fx-border-color: #d9ed92; -fx-border-width: 2; -fx-border-radius: 10;">
                     <padding>
                         <Insets top="10" right="10" bottom="10" left="10" />
                     </padding>

@@ -7,15 +7,16 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
+import javafx.scene.control.Label;
 
 import java.util.Random;
 
 public class DiceAnimator {
     private final StackPane dicePane;
     private final Text resultText;
-    private final ImageView diceImageView;
+    private ImageView diceImageView;
     private final Random random;
-    private final Image[] diceImages;
+    private Image[] diceImages;
     private int finalResult;
     private Runnable onRollComplete;
 
@@ -23,22 +24,31 @@ public class DiceAnimator {
         this.dicePane = dicePane;
         this.resultText = resultText;
         this.random = new Random();
+        this.diceImages = new Image[6]; // Initialize the array
+        this.diceImageView = new ImageView(); // Initialize the image view
 
-        // Load dice images (assuming you have dice images from 1-6 in resources folder)
-        this.diceImages = new Image[6];
-        for (int i = 0; i < 6; i++) {
-            diceImages[i] = new Image(getClass().getResourceAsStream("/org/example/sdprototype/images/dice/dice" + (i + 1) + ".png"));
+        try {
+            // Load dice images (assuming you have dice images from 1-6 in resources folder)
+            for (int i = 0; i < 6; i++) {
+                diceImages[i] = new Image(getClass().getResourceAsStream("/org/example/sdprototype/images/dice/dice" + (i + 1) + ".png"));
+            }
+
+            // Configure the ImageView
+            diceImageView.setFitWidth(100);
+            diceImageView.setFitHeight(100);
+            diceImageView.setPreserveRatio(true);
+
+            // Clear the dice pane and add the image view
+            dicePane.getChildren().clear();
+            dicePane.getChildren().add(diceImageView);
+        } catch (Exception e) {
+            System.err.println("Error loading dice images: " + e.getMessage());
+            // Fallback to emoji dice
+            Label diceFallback = new Label("🎲");
+            diceFallback.setStyle("-fx-font-size: 80px;");
+            dicePane.getChildren().clear();
+            dicePane.getChildren().add(diceFallback);
         }
-
-        // Create and configure the ImageView
-        diceImageView = new ImageView();
-        diceImageView.setFitWidth(100);
-        diceImageView.setFitHeight(100);
-        diceImageView.setPreserveRatio(true);
-
-        // Clear the dice pane and add the image view
-        dicePane.getChildren().clear();
-        dicePane.getChildren().add(diceImageView);
     }
 
     public void rollDice(Runnable onComplete) {
@@ -61,7 +71,11 @@ public class DiceAnimator {
                     event -> {
                         // During animation, show random dice faces
                         int randomFace = random.nextInt(6);
-                        diceImageView.setImage(diceImages[randomFace]);
+                        try {
+                            diceImageView.setImage(diceImages[randomFace]);
+                        } catch (Exception e) {
+                            System.err.println("Error updating dice image: " + e.getMessage());
+                        }
 
                         // On last frame, show actual result
                         if (frameIndex == 9) {
@@ -77,8 +91,12 @@ public class DiceAnimator {
     }
 
     private void showFinalResult() {
-        // Show the final dice face
-        diceImageView.setImage(diceImages[finalResult - 1]);
+        try {
+            // Show the final dice face
+            diceImageView.setImage(diceImages[finalResult - 1]);
+        } catch (Exception e) {
+            System.err.println("Error showing final result: " + e.getMessage());
+        }
 
         // Update the result text
         resultText.setText("Rolled: " + finalResult);
