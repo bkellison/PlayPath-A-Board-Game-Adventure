@@ -43,28 +43,35 @@ public class GameController {
     private String specialMessage = null;
 
     // Arrays that hold the indices of the special spaces for each theme
-    private final int[] specialIdx1 = { 3, 9, 13, 19 };
+    // These indices correspond to the positional indices in the track path, not the grid numbers
+    private int[] specialIdx1;
     private final int[] specialIdx2 = {  };
     private final int[] specialIdx3 = {  };
 
     // Arrays to hold results of special spaces (ex. -1 space)
-    private final int[] specialActions1 = { -1, 1, 3, -2 };
+    private int[] specialActions1;
     private final int[] specialActions2 = {  };
     private final int[] specialActions3 = {  };
 
     // Arrays to hold the special messages that will be displayed on the screen as a result of landing on special spaces
-    private final String[] specialMessage1 = {
+    private String[] specialMessage1;
+    private final String[] specialMessage2 = {  };
+    private final String[] specialMessage3 = {  };
+
+    // Original special messages for Track 1
+    private final String[] originalSpecialMessages1 = {
             "Oh no! Lord Farquaad sents his knights after you — move back one space.",
             "Fiona shows you a shortcut — move up one space!",
             "Dragon swoops in and gives you a lift — fly forward three spaces!",
             "Not the gumdrop buttons! The Gingerbread Man lost a leg! — move back two spaces."
     };
-    private final String[] specialMessage2 = {  };
-    private final String[] specialMessage3 = {  };
 
     public GameController(BoardGrid boardGrid, GameTrack track) {
         this.boardGrid = boardGrid;
         this.selectedTrack = track;
+
+        // Initialize the special squares for Track 1
+        initializeSpecialSquares();
 
         // Based on the game mode chosen, set the special spaces indices
         String trackName = selectedTrack.getName();
@@ -94,6 +101,79 @@ public class GameController {
 
         // Add the player token to the track display pane
         trackDisplayPane.getChildren().add(playerToken);
+    }
+
+    /**
+     * Initialize special squares by mapping grid board numbers to track indices
+     */
+    private void initializeSpecialSquares() {
+        // Get the track positions to map grid numbers to track indices
+        List<int[]> trackPositions = selectedTrack.getTrackPositions();
+
+        // Create arrays to hold information for special squares
+        specialIdx1 = new int[4];
+        specialActions1 = new int[4];
+        specialMessage1 = new String[4];
+
+        // Find track indices corresponding to grid board numbers 3, 9, 13, and 38
+        int count = 0;
+        for (int i = 0; i < trackPositions.size(); i++) {
+            int[] position = trackPositions.get(i);
+            int row = position[0];
+            int col = position[1];
+
+            // Calculate the grid board number from row and col
+            int gridNumber = calculateGridNumber(row, col);
+
+            // Set the special square information based on the grid number
+            if (gridNumber == 3) {
+                specialIdx1[0] = i;
+                specialActions1[0] = -1; // Move back 1 space
+                specialMessage1[0] = originalSpecialMessages1[0]; // Lord Farquaad message
+                count++;
+            } else if (gridNumber == 9) {
+                specialIdx1[1] = i;
+                specialActions1[1] = -1; // Move back 1 space
+                specialMessage1[1] = originalSpecialMessages1[3]; // Gingerbread Man message
+                count++;
+            } else if (gridNumber == 19) {
+                specialIdx1[2] = i;
+                specialActions1[2] = 1; // Move forward 1 space
+                specialMessage1[2] = originalSpecialMessages1[1]; // Fiona message
+                count++;
+            } else if (gridNumber == 38) {
+                specialIdx1[3] = i;
+                specialActions1[3] = 3; // Move forward 3 spaces
+                specialMessage1[3] = originalSpecialMessages1[2]; // Dragon message
+                count++;
+            }
+            // If we've found all special squares, break the loop
+            if (count == 4) {
+                break;
+            }
+        }
+
+        // Log the special square mapping for debugging
+        System.out.println("Special squares initialized:");
+        for (int i = 0; i < specialIdx1.length; i++) {
+            System.out.println("Track index " + specialIdx1[i] + " (grid number " +
+                    (i == 0 ? 3 : i == 1 ? 9 : i == 2 ? 13 : 38) +
+                    ") will move " + (specialActions1[i] > 0 ? "forward " : "back ") +
+                    Math.abs(specialActions1[i]) + " space(s)");
+        }
+    }
+
+    /**
+     * Calculate the grid board number from row and column coordinates
+     */
+    private int calculateGridNumber(int row, int col) {
+        if (row % 2 == 0) {
+            // Left to right rows
+            return row * 8 + col + 1;
+        } else {
+            // Right to left rows
+            return row * 8 + (8 - col);
+        }
     }
 
     public void setRollDiceButton(Button rollDiceButton) {
@@ -176,10 +256,16 @@ public class GameController {
         // Check if landing on a special space
         int specialAction = 0;
         String specialMsg = null;
+
+        // Debug output to check special square detection
+        System.out.println("Checking if " + targetIndex + " is a special space");
+        System.out.println("Special indices: " + java.util.Arrays.toString(specialIdx));
+
         for (int i = 0; i < specialIdx.length; i++) {
             if (specialIdx[i] == targetIndex) {
                 specialAction = specialActions[i];
                 specialMsg = messages[i];
+                System.out.println("Found special space at index " + i + ": action=" + specialAction + ", message=" + specialMsg);
                 break;
             }
         }
@@ -187,6 +273,10 @@ public class GameController {
         // If space is special, need to trigger additional animation
         if (specialAction != 0) {
             int finalTargetIndex = targetIndex + specialAction;
+
+            // Make sure finalTargetIndex stays within bounds
+            finalTargetIndex = Math.max(0, Math.min(finalTargetIndex, trackPositions.size() - 1));
+
             System.out.println("Player hit a special space! Will move to: " + finalTargetIndex);
             System.out.println("Message: " + specialMsg);
             setSpecialMessage(specialMsg);
@@ -194,17 +284,21 @@ public class GameController {
             // Send initial and final target index to arduino
             ArduinoConnector.sendTargetIndices(targetIndex, finalTargetIndex);
 
+            // Store final values for use in the lambda
+            final int finalFinalTargetIndex = finalTargetIndex;
+
             moveTimeline.setOnFinished(event -> {
                 // Pause for a short delay before triggering second animation
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
                 pause.setOnFinished(pauseEvent -> {
-                    Timeline specialMoveTimeline = animatePlayerMovement(targetIndex, finalTargetIndex, trackPositions, false);
+                    Timeline specialMoveTimeline = animatePlayerMovement(targetIndex, finalFinalTargetIndex, trackPositions, false);
                     specialMoveTimeline.setOnFinished(e -> {
                         animationInProgress = false;
                         if (rollDiceButton != null) {
                             rollDiceButton.setDisable(false);
                         }
                     });
+                    specialMoveTimeline.play();
                 });
                 pause.play();
             });
@@ -222,6 +316,9 @@ public class GameController {
                 }
             });
         }
+
+        // Play the first animation
+        moveTimeline.play();
     }
 
     // Add overloaded method to handle button parameter
@@ -254,8 +351,6 @@ public class GameController {
             }
         }
 
-        // Play the animation
-        timeline.play();
         return timeline;
     }
 

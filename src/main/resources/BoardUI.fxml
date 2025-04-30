@@ -57,8 +57,8 @@
                     </font>
                 </Text>
 
-                <StackPane prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #e0e0e0;                            -fx-background-radius: 10;">
-                    <Label style="-fx-font-size: 80px;" text="🎲" />
+                <StackPane fx:id="dicePane" prefHeight="150.0" prefWidth="150.0" style="-fx-background-color: #e0e0e0;                            -fx-background-radius: 10;">
+                    <!-- The dice image will be added programmatically -->
                 </StackPane>
 
                 <Button fx:id="rollDiceButton" onAction="#handleRollDice" prefHeight="50.0" prefWidth="200.0" style="-fx-background-color: #3498db;                            -fx-text-fill: white;                            -fx-background-radius: 25;" text="Roll Dice">
@@ -66,11 +66,11 @@
                         <Font size="16.0" />
                     </font>
                 </Button>
-            <Label fx:id="messageLabel" text="Roll the dice to start the game!" wrapText="true">
-               <font>
-                  <Font size="14.0" />
-               </font>
-            </Label>
+                <Label fx:id="messageLabel" text="Roll the dice to start the game!" wrapText="true">
+                    <font>
+                        <Font size="14.0" />
+                    </font>
+                </Label>
             </VBox>
         </VBox>
     </center>

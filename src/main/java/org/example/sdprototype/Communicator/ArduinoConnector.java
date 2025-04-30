@@ -10,13 +10,25 @@ public class ArduinoConnector {
 
     private static final String ARDUINO_IP = "http://172.20.10.6";
 
+    // Flag to enable/disable Arduino communication
+    private static final boolean ARDUINO_ENABLED = false; // Set to false to disable Arduino communication
+
     // Function to send HTTP request to arduino: called within helper functions to send specific requests
     private static void sendRequest(String urlString) {
+        // Skip if Arduino is disabled
+        if (!ARDUINO_ENABLED) {
+            System.out.println("Arduino communication disabled. Would have sent: " + urlString);
+            return;
+        }
+
         try {
             // Form the URL from the url string, and attempt to open an HTTP connection, setting the method to "GET"
             URL url = new URL(urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
+
+            // Add short timeout to prevent long waits
+            connection.setConnectTimeout(2000); // 2 second timeout
 
             // Get response code to ensure connection successful
             System.out.println("Sending request to " + urlString);
@@ -35,8 +47,9 @@ public class ArduinoConnector {
             connection.disconnect();
         }
         catch (Exception e) {
-            System.out.println("Error sending request to Arduino:");
-            e.printStackTrace();
+            System.out.println("Error sending request to Arduino: Arduino might not be connected");
+            // Don't print stack trace to avoid cluttering console
+            // e.printStackTrace();
         }
     }
 
@@ -55,6 +68,12 @@ public class ArduinoConnector {
 
     // MAIN METHOD FOR TESTING LED BEHAVIOR
     public static void main(String[] args) {
+        // Skip if Arduino is disabled
+        if (!ARDUINO_ENABLED) {
+            System.out.println("Arduino communication disabled. Testing cannot proceed.");
+            return;
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         try {
