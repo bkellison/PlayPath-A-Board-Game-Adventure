@@ -133,7 +133,7 @@ public class GameController {
                 count++;
             } else if (gridNumber == 9) {
                 specialIdx1[1] = i;
-                specialActions1[1] = -1; // Move back 1 space
+                specialActions1[1] = -2; // Move back 2 spaces
                 specialMessage1[1] = originalSpecialMessages1[3]; // Gingerbread Man message
                 count++;
             } else if (gridNumber == 19) {
