@@ -40,7 +40,7 @@
                     <graphic>
                         <HBox alignment="CENTER_LEFT" spacing="10.0">
                             <Circle fx:id="track2Circle" fill="BLUE" radius="8.0" stroke="BLACK" strokeType="INSIDE" />
-                            <Label text="Ocean Odyssey" />
+                            <Label text="Rainforest Rumble" />
                         </HBox>
                     </graphic>
                 </Button>

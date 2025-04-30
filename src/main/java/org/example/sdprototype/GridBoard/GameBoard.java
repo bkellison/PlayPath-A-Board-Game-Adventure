@@ -234,8 +234,7 @@ public class GameBoard {
             System.out.println("Loading theme 2 images");
             imagesArray = theme2;
             // Comment out other background images
-            // backgroundImagePath = "/org/example/sdprototype/images/Theme2/OceanBackground.png";
-            backgroundImagePath = "";
+            backgroundImagePath = "/org/example/sdprototype/images/Theme2/Board2.png";
             specialSpaces = specialSpacesTheme2;
         }
         else if (Objects.equals(trackName, "Track 3")) {

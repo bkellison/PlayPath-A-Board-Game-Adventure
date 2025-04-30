@@ -43,35 +43,41 @@ public class GameController {
     private String specialMessage = null;
 
     // Arrays that hold the indices of the special spaces for each theme
-    // These indices correspond to the positional indices in the track path, not the grid numbers
-    private int[] specialIdx1;
-    private final int[] specialIdx2 = {  };
-    private final int[] specialIdx3 = {  };
+    private final int[] specialIdx1 = { 6, 8, 13, 20 };
+    private final int[] specialIdx2 = { 1, 3, 6, 9, 13};
+    private final int[] specialIdx3 = { 3, 6, 10, 13, 16 };
 
-    // Arrays to hold results of special spaces (ex. -1 space)
-    private int[] specialActions1;
-    private final int[] specialActions2 = {  };
-    private final int[] specialActions3 = {  };
+    // Arrays to hold results of special spaces
+    private final int[] specialActions1 = { -1, 1, 3, -2 };
+    private final int[] specialActions2 = {  1, 1, -1, 1, -1};
+    private final int[] specialActions3 = { -2, 2, -1, -1, -1 };
 
     // Arrays to hold the special messages that will be displayed on the screen as a result of landing on special spaces
-    private String[] specialMessage1;
-    private final String[] specialMessage2 = {  };
-    private final String[] specialMessage3 = {  };
-
-    // Original special messages for Track 1
-    private final String[] originalSpecialMessages1 = {
+    private final String[] specialMessage1 = {
             "Oh no! Lord Farquaad sents his knights after you — move back one space.",
+            "Not the gumdrop buttons! The Gingerbread Man lost a leg! — move back two spaces.",
             "Fiona shows you a shortcut — move up one space!",
-            "Dragon swoops in and gives you a lift — fly forward three spaces!",
-            "Not the gumdrop buttons! The Gingerbread Man lost a leg! — move back two spaces."
+            "Dragon swoops in and gives you a lift — fly forward three spaces!"
+    };
+
+    private final String[] specialMessage2 = {
+            "Ribbit! A mischievous frog startles you — leap forward one space!",
+            "Hisss! A sly snake slithers into your path — move back one space!",
+            "Squawk! A chatty parrot distracts you with gossip — move forward one space!",
+            "Caw! A nosy toucan pecks at your supplies — lose time and move back one space!",
+            "Ooh ooh aah aah! A playful monkey steals your hat — swing back one space to chase it!"
+    };
+    private final String[] specialMessage3 = {
+            "Arrr! A fearsome pirate blocks your path and makes you move back two spaces!",
+            "A friendly crab gives you a boost — move forward two spaces!",
+            "A sneaky pirate jumps out and stops you — move back one space.",
+            "BOOM! A nearby ship fires a cannonball across your bow — retreat back one space!",
+            "A massive whale surfaces in your path — you're forced to move back one space to avoid it!"
     };
 
     public GameController(BoardGrid boardGrid, GameTrack track) {
         this.boardGrid = boardGrid;
         this.selectedTrack = track;
-
-        // Initialize the special squares for Track 1
-        initializeSpecialSquares();
 
         // Based on the game mode chosen, set the special spaces indices
         String trackName = selectedTrack.getName();
@@ -101,66 +107,6 @@ public class GameController {
 
         // Add the player token to the track display pane
         trackDisplayPane.getChildren().add(playerToken);
-    }
-
-    /**
-     * Initialize special squares by mapping grid board numbers to track indices
-     */
-    private void initializeSpecialSquares() {
-        // Get the track positions to map grid numbers to track indices
-        List<int[]> trackPositions = selectedTrack.getTrackPositions();
-
-        // Create arrays to hold information for special squares
-        specialIdx1 = new int[4];
-        specialActions1 = new int[4];
-        specialMessage1 = new String[4];
-
-        // Find track indices corresponding to grid board numbers 3, 9, 13, and 38
-        int count = 0;
-        for (int i = 0; i < trackPositions.size(); i++) {
-            int[] position = trackPositions.get(i);
-            int row = position[0];
-            int col = position[1];
-
-            // Calculate the grid board number from row and col
-            int gridNumber = calculateGridNumber(row, col);
-
-            // Set the special square information based on the grid number
-            if (gridNumber == 3) {
-                specialIdx1[0] = i;
-                specialActions1[0] = -1; // Move back 1 space
-                specialMessage1[0] = originalSpecialMessages1[0]; // Lord Farquaad message
-                count++;
-            } else if (gridNumber == 9) {
-                specialIdx1[1] = i;
-                specialActions1[1] = -1; // Move back 1 space
-                specialMessage1[1] = originalSpecialMessages1[3]; // Gingerbread Man message
-                count++;
-            } else if (gridNumber == 19) {
-                specialIdx1[2] = i;
-                specialActions1[2] = 1; // Move forward 1 space
-                specialMessage1[2] = originalSpecialMessages1[1]; // Fiona message
-                count++;
-            } else if (gridNumber == 38) {
-                specialIdx1[3] = i;
-                specialActions1[3] = 3; // Move forward 3 spaces
-                specialMessage1[3] = originalSpecialMessages1[2]; // Dragon message
-                count++;
-            }
-            // If we've found all special squares, break the loop
-            if (count == 4) {
-                break;
-            }
-        }
-
-        // Log the special square mapping for debugging
-        System.out.println("Special squares initialized:");
-        for (int i = 0; i < specialIdx1.length; i++) {
-            System.out.println("Track index " + specialIdx1[i] + " (grid number " +
-                    (i == 0 ? 3 : i == 1 ? 9 : i == 2 ? 13 : 38) +
-                    ") will move " + (specialActions1[i] > 0 ? "forward " : "back ") +
-                    Math.abs(specialActions1[i]) + " space(s)");
-        }
     }
 
     /**
