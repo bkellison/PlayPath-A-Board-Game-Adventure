@@ -38,12 +38,14 @@ public class MainApplication extends Application {
             SoundManager.preloadSounds(
                     "/org/example/sdprototype/sounds/dice1.wav",
                     "/org/example/sdprototype/sounds/dice2.wav",
-                    "/org/example/sdprototype/sounds/JumpSound.wav"
+                    "/org/example/sdprototype/sounds/JumpSound.wav",
+                    "/org/example/sdprototype/sounds/SuccessSound.wav",
+                    "/org/example/sdprototype/sounds/FailSound.wav"
             );
             System.out.println("Game sounds preloaded successfully");
         } catch (Exception e) {
             System.err.println("Error preloading sounds: " + e.getMessage());
-            e.printStackTrace(); // Add this to see detailed error
+            e.printStackTrace();
         }
     }
 

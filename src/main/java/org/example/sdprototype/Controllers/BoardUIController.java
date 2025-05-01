@@ -126,6 +126,7 @@ public class BoardUIController {
                         pause.setOnFinished(pauseEvent -> {
                             System.out.println("UI controller has received message: " + message);
                             messageLabel.setText(message);
+                            // Remove duplicate sound here since we're playing the appropriate sound in GameController
                         });
                         pause.play();
                     } else {

@@ -278,8 +278,18 @@ public class GameController {
 
             // Store final values for use in the lambda
             final int finalFinalTargetIndex = finalTargetIndex;
+            final int finalSpecialAction = specialAction;  // Make specialAction final for lambda
 
             moveTimeline.setOnFinished(event -> {
+                // Play appropriate sound based on whether it's a good or bad special space
+                if (finalSpecialAction > 0) {  // Use finalSpecialAction instead of specialAction
+                    // Good space - play success sound
+                    SoundManager.playSound("/org/example/sdprototype/sounds/SuccessSound.wav");
+                } else {
+                    // Bad space - play fail sound
+                    SoundManager.playSound("/org/example/sdprototype/sounds/FailSound.wav");
+                }
+
                 // Pause for a short delay before triggering second animation
                 PauseTransition pause = new PauseTransition(Duration.seconds(1.5));
                 pause.setOnFinished(pauseEvent -> {
@@ -299,7 +309,7 @@ public class GameController {
             // Send indices to arduino: since not a special space, initial and final target index will be the same
             ArduinoConnector.sendTargetIndices(targetIndex, targetIndex);
 
-            // Now just re-enable after first move finishes and set the special message to null (should still be null if reaches this statement)
+            // Now just re-enable after first move finishes and set the special message to null
             setSpecialMessage(specialMsg);
             moveTimeline.setOnFinished(event -> {
                 animationInProgress = false;
@@ -346,7 +356,6 @@ public class GameController {
         return timeline;
     }
 
-    // In GameController.java - animateStep method
     private void animateStep(Timeline timeline, int index, int endIndex, List<int[]> trackPositions,
                              double hopDuration, double timePoint, boolean isWinningMove) {
         // Calculate positions
