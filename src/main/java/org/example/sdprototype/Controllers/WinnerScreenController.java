@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.example.sdprototype.Application.MainApplication;
+import org.example.sdprototype.Communicator.ArduinoConnector;
 import org.example.sdprototype.GameLogic.Player;
 
 import java.io.IOException;
@@ -50,6 +51,9 @@ public class WinnerScreenController {
             // Get the controller and set the stage
             TrackSelectionScreenController controller = loader.getController();
             controller.setStage(stage);
+
+            // Tell arduino we are playing a new game
+            ArduinoConnector.sendNewGame();
         } catch (IOException ex) {
             System.out.println("Could not load track selection screen: " + ex.getMessage());
         }
