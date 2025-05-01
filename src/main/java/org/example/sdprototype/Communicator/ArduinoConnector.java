@@ -82,6 +82,12 @@ public class ArduinoConnector {
         sendRequest(url);
     }
 
+    // Helper function to tell arduino we are playing another game
+    public static void sendNewGame() {
+        String url = ARDUINO_IP + "/newGame";
+        sendRequest(url);
+    }
+
     // MAIN METHOD FOR TESTING LED BEHAVIOR
     public static void main(String[] args) {
         // Skip if Arduino is disabled
