@@ -21,36 +21,40 @@ public class ArduinoConnector {
             return;
         }
 
-        try {
-            // Form the URL from the url string, and attempt to open an HTTP connection, setting the method to "GET"
-            URL url = new URL(urlString);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
+        // Create a separate thread to handle HTTP requests to prevent UI lag
+        new Thread(() -> {
+            try {
+                // Form the URL from the url string, and attempt to open an HTTP connection, setting the method to "GET"
+                URL url = new URL(urlString);
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestMethod("GET");
 
-            // Add short timeout to prevent long waits
-            connection.setConnectTimeout(2000); // 2 second timeout
+                // Add short timeout to prevent long waits
+                connection.setConnectTimeout(2000); // 2 second timeout
 
-            // Get response code to ensure connection successful
-            System.out.println("Sending request to " + urlString);
-            int responseCode = connection.getResponseCode();
-            System.out.println("Response Code : " + responseCode);
+                // Get response code to ensure connection successful
+                System.out.println("Sending request to " + urlString);
+                int responseCode = connection.getResponseCode();
+                System.out.println("Response Code : " + responseCode);
 
-            // Create buffered reader for input stream
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            System.out.println("Response from Arduino:");
-            while ((inputLine = in.readLine()) != null) {
-                System.out.println(inputLine);
+                // Create buffered reader for input stream
+                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+                String inputLine;
+                System.out.println("Response from Arduino:");
+                while ((inputLine = in.readLine()) != null) {
+                    System.out.println(inputLine);
+                }
+                // Close connection when received reponse and done reading
+                in.close();
+                connection.disconnect();
             }
-            // Close connection when received reponse and done reading
-            in.close();
-            connection.disconnect();
-        }
-        catch (Exception e) {
-            System.out.println("Error sending request to Arduino: Arduino might not be connected");
-            // Don't print stack trace to avoid cluttering console
-            // e.printStackTrace();
-        }
+            catch (Exception e) {
+                System.out.println("Error sending request to Arduino: Arduino might not be connected");
+                // Don't print stack trace to avoid cluttering console
+                // e.printStackTrace();
+            }
+        }).start();
+
     }
 
     // Helper function to send the selected game mode to the arduino
