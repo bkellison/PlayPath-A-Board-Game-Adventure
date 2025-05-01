@@ -1,6 +1,147 @@
-.root {
-    -fx-background-image: url('images/gameboard.jpg');
-    -fx-background-size: cover;
-    -fx-background-position: center center;
-    -fx-background-repeat: no-repeat;
+/* Import Poppins font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+/* Register Container Styling */
+.register-container {
+    text-align: center;
+    font-family: 'Poppins', sans-serif;
+    color: #8B5E3C;
+    max-width: 600px;
+    margin: auto;
+    padding: 50px 20px;
+}
+
+/* Register Header Styling */
+.register-header {
+    background: #f5e1c5;
+    padding: 15px 65px;
+    border-radius: 20px;
+    display: inline-block;
+    font-size: 32px;
+    font-weight: 600;
+    color: #5c4033;
+    margin-bottom: 20px;
+}
+
+/* Form Styling */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Label Styling */
+.label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #5c4033;
+    text-align: left;
+}
+
+/* Input and Select Styling */
+.input, .select {
+    padding: 12px;
+    border: 1px solid #8B5E3C;
+    border-radius: 8px;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Button Styling */
+.button {
+    background: linear-gradient(135deg, #8B5E3C, #6A3E2B);
+    transition: transform 0.2s ease-in-out, background-color 0.3s;
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Button Hover Effect */
+.button:hover {
+    transform: scale(1.05);
+    background: linear-gradient(135deg, #6A3E2B, #8B5E3C);
+}
+
+/* Text and Link Styling */
+.paragraph {
+    margin-top: 20px;
+    font-family: 'Poppins', sans-serif;
+    color: #5c4033;
+}
+
+.link {
+    color: #8B5E3C;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+/* Background Styling */
+.background {
+    -fx-background-color: transparent;
+}
+
+/* Track Button Styling */
+.track-button {
+    -fx-background-color: #f5e1c5;
+    -fx-background-radius: 8px;
+    -fx-border-color: #8B5E3C;
+    -fx-border-width: 2px;
+    -fx-border-radius: 8px;
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-text-fill: #5c4033;
+}
+
+.track-button:hover {
+    -fx-background-color: #f0d6b3;
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+}
+
+/* Start Button Styling */
+.start-button {
+    -fx-background-color: linear-gradient(135deg, #8B5E3C, #6A3E2B);
+    -fx-text-fill: white;
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-font-size: 18px;
+    -fx-background-radius: 8px;
+}
+
+.start-button:hover {
+    -fx-background-color: linear-gradient(135deg, #6A3E2B, #8B5E3C);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Information Box Styling */
+.info-box {
+    -fx-background-color: #f5e1c5;
+    -fx-background-radius: 15px;
+    -fx-border-color: #8B5E3C;
+    -fx-border-width: 2px;
+    -fx-border-radius: 15px;
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-text-fill: #5c4033;
+}
+
+/* Title Styling */
+.title {
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-font-weight: bold;
+    -fx-text-fill: #5c4033;
+    -fx-font-size: 28px;
+}
+
+/* Subtitle Styling */
+.subtitle {
+    -fx-font-family: 'Poppins', sans-serif;
+    -fx-font-weight: semi-bold;
+    -fx-text-fill: #8B5E3C;
+    -fx-font-size: 18px;
 }

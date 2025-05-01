@@ -64,7 +64,7 @@
                         <Font name="Arial Bold" size="14.0" />
                     </font>
                 </Label>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shrek's Swamp Trek:&#10;Make your way from the fancy halls of Duloc Castle back to Shrek’s beloved swamp! Watch out for fairy tale mischief along the way — it's a muddy, magical journey home!&#10;&#10;Ocean Odyssey:&#10;Climb aboard your trusty submarine and dive into the deep blue! Discover playful dolphins, mysterious jellyfish, and other ocean creatures as you navigate the watery world below.&#10;&#10;Pirate's Gold Rush:&#10;Set sail on the ultimate adventure to find the legendary hidden treasure! Follow the twists and turns of the map, brave obstacles, and race to reach the X before someone else!" wrappingWidth="210.0" />
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shrek's Swamp Trek:&#10;Make your way from the fancy halls of Duloc Castle back to Shrek’s beloved swamp! Watch out for fairy tale mischief along the way — it's a muddy, magical journey home!&#10;&#10;Rainforest Rumble:&#10;Rainforest Rumble: Climb aboard your trusty submarine and dive into the deep blue! Discover playful dolphins, mysterious jellyfish, and other ocean creatures as you navigate the watery world below.&#10;&#10;Pirate's Gold Rush:&#10;Set sail on the ultimate adventure to find the legendary hidden treasure! Follow the twists and turns of the map, brave obstacles, and race to reach the X before someone else!" wrappingWidth="210.0" />
             </VBox>
         </HBox>
     </center>
