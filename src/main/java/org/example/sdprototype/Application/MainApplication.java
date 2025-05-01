@@ -6,7 +6,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import org.example.sdprototype.Controllers.WelcomeScreenController;
-
+import org.example.sdprototype.Utilities.SoundManager;
 
 public class MainApplication extends Application {
 
@@ -14,6 +14,9 @@ public class MainApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting Application");
         primaryStage.setTitle("Board Game");
+
+        // Preload sounds
+        preloadGameSounds();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/WelcomeScreen.fxml"));
         Parent root = loader.load();
@@ -27,6 +30,28 @@ public class MainApplication extends Application {
         controller.setStage(primaryStage);
 
         primaryStage.show();
+    }
+
+    private void preloadGameSounds() {
+        try {
+            // Preload all sounds used in the game
+            SoundManager.preloadSounds(
+                    "/org/example/sdprototype/sounds/dice1.wav",
+                    "/org/example/sdprototype/sounds/dice2.wav",
+                    "/org/example/sdprototype/sounds/JumpSound.wav"
+            );
+            System.out.println("Game sounds preloaded successfully");
+        } catch (Exception e) {
+            System.err.println("Error preloading sounds: " + e.getMessage());
+            e.printStackTrace(); // Add this to see detailed error
+        }
+    }
+
+    @Override
+    public void stop() {
+        // Clean up sound resources when application closes
+        System.out.println("Cleaning up sound resources...");
+        SoundManager.cleanup();
     }
 
     public static void main(String[] args) {

@@ -27,6 +27,7 @@ import org.example.sdprototype.GridBoard.BoardGrid;
 import org.example.sdprototype.GridBoard.BoardSpace;
 import org.example.sdprototype.GridBoard.GameTrack;
 import org.example.sdprototype.Communicator.ArduinoConnector;
+import org.example.sdprototype.Utilities.SoundManager;
 
 import java.io.IOException;
 import java.util.List;
@@ -112,10 +113,6 @@ public class GameController {
         trackDisplayPane.getChildren().add(playerToken);
     }
 
-    /**
-     * Creates a themed player token based on the selected track
-     * @return A Node representing the themed player token
-     */
     private Node createThemedPlayerToken() {
         String trackName = selectedTrack.getName();
 
@@ -160,9 +157,6 @@ public class GameController {
         return token;
     }
 
-    /**
-     * Calculate the grid board number from row and column coordinates
-     */
     private int calculateGridNumber(int row, int col) {
         if (row % 2 == 0) {
             // Left to right rows
@@ -352,6 +346,7 @@ public class GameController {
         return timeline;
     }
 
+    // In GameController.java - animateStep method
     private void animateStep(Timeline timeline, int index, int endIndex, List<int[]> trackPositions,
                              double hopDuration, double timePoint, boolean isWinningMove) {
         // Calculate positions
@@ -384,9 +379,13 @@ public class GameController {
             double tokenWidth = playerToken.getBoundsInLocal().getWidth();
             double tokenHeight = playerToken.getBoundsInLocal().getHeight();
 
-            // Add hop up animation
+            // Add hop up animation with jump sound
             KeyFrame hopUpFrame = new KeyFrame(
                     Duration.seconds(timePoint + hopDuration/3),
+                    event -> {
+                        // Play jump sound when hopping up
+                        SoundManager.playSound("/org/example/sdprototype/sounds/JumpSound.wav");
+                    },
                     new KeyValue(playerToken.layoutXProperty(), centerX - tokenWidth/2),
                     new KeyValue(playerToken.layoutYProperty(), centerY - tokenHeight/2 - 20) // Hop up 20 pixels
             );

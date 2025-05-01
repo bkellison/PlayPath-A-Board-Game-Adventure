@@ -8,6 +8,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import javafx.scene.control.Label;
+import org.example.sdprototype.Utilities.SoundManager;
 
 import java.util.Random;
 
@@ -59,6 +60,9 @@ public class DiceAnimator {
 
         // Update text to show rolling
         resultText.setText("Rolling...");
+
+        // Play dice roll sound
+        SoundManager.playSound("/org/example/sdprototype/sounds/dice" + (random.nextInt(2) + 1) + ".wav");
 
         // Create animation timeline
         Timeline timeline = new Timeline();
