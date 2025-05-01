@@ -72,6 +72,8 @@ public class TrackSelectionScreenController {
             GameBoard gameBoard = new GameBoard();
             gameBoard.setTrack(selectedTrack);
             gameBoard.init(stage);
+
+            ArduinoConnector.sendStartGame();
         }
     }
 

@@ -19,6 +19,19 @@ Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
  */
 
 /*
+ * Mode 2: Shrek's Swamp Trek
+ */
+int mode1Space0[] = {};
+
+int mode1Lengths[] = {0};
+
+int* mode1Path[] = {mode1Space0};
+
+int mode1PathLength = 24;
+
+int mode1Color[] = {0, 255, 0}; // green for shrek
+
+/*
  * Mode 2: Rainforest rumble
  */
 int mode2Space0[] = {436, 435, 364};
@@ -38,11 +51,54 @@ int mode2Space13[] = {173, 174, 103, 104};
 int mode2Space14[] = {177, 178, 110, 111};
 int mode2Space15[] = {45, 41, 40};
 
-int mode2Lengths[] = {3, 3, 4, 2, 2, 3, 3, 4, 2, 2, 4, 3, 2, 4, 4, 2};
+int mode2Lengths[] = {3, 3, 3, 2, 2, 3, 3, 4, 2, 2, 4, 3, 2, 4, 4, 3};
 
 int* mode2Path[] = {mode2Space0, mode2Space1, mode2Space2, mode2Space3, mode2Space4, mode2Space5,
 mode2Space6, mode2Space7, mode2Space8, mode2Space9, mode2Space10, mode2Space11, mode2Space12,
 mode2Space13, mode2Space14, mode2Space15};
+
+int mode2PathLength = 16;
+
+int mode2Color[] = {255, 0, 0}; // red for rainforest
+
+/*
+ * Mode 3: Pirate's Plunder
+ */
+int mode3Space0[] = {321, 322, 44, 45};
+int mode3Space1[] = {324, 325, 114};
+int mode3Space2[] = {327, 328, 249, 250};
+int mode3Space3[] = {245, 173, 174};
+int mode3Space4[] = {241, 193, 194};
+int mode3Space5[] = {117, 118, 99, 100};
+int mode3Space6[] = {165, 166, 95};
+int mode3Space7[] = {161, 162, 91};
+int mode3Space8[] = {157, 86, 87};
+int mode3Space9[] = {139, 140, 82, 83};
+int mode3Space10[] = {206, 210, 211};
+int mode3Space11[] = {359, 282};
+int mode3Space12[] = {228, 229, 355};
+int mode3Space13[] = {232, 233, 269, 270};
+int mode3Space14[] = {382, 383, 422};
+int mode3Space15[] = {346, 347, 418};
+int mode3Space16[] = {342, 413, 414};
+int mode3Space17[] = {337, 338, 409};
+int mode3Space18[] = {333, 334, 405};
+
+int mode3Lengths[] = {4, 3, 4, 3, 3, 4, 3, 3, 3, 4, 3, 2, 3, 4, 3, 3, 3, 3, 3};
+
+int* mode3Path[] = {mode3Space0, mode3Space1, mode3Space2, mode3Space3, mode3Space4, mode3Space5,
+mode3Space6, mode3Space7, mode3Space8, mode3Space9, mode3Space10, mode3Space11, mode3Space12,
+mode3Space13, mode3Space14, mode3Space15, mode3Space16, mode3Space17, mode3Space18};
+
+int mode3PathLength = 19;
+
+int mode3Color[] = {0, 0, 255}; // blue for pirates
+
+// Variables to store current mode data
+int** currentModePath = nullptr;
+int* currentModeLengths = nullptr;
+int* currentModeColor = nullptr;
+int currentModePathLength = 0;
 
 void setup() {
   Serial.begin(9600);
@@ -75,16 +131,23 @@ void setup() {
   strip.show();
 
   // TESTING LIGHTS
-  //strip.setPixelColor(50, strip.Color(0, 0, 255));
-  //strip.setPixelColor(100, strip.Color(0, 0, 255));
-  //strip.setPixelColor(150, strip.Color(0, 0, 255));
-  //strip.setPixelColor(200, strip.Color(0, 0, 255));
-  //strip.setPixelColor(250, strip.Color(0, 0, 255));
-  //strip.setPixelColor(300, strip.Color(0, 0, 255));
-  //strip.setPixelColor(350, strip.Color(0, 0, 255));
-  //strip.setPixelColor(400, strip.Color(0, 0, 255));
-
-  strip.show();
+  //strip.setPixelColor(25, strip.Color(255, 0, 0));  //red
+  //strip.setPixelColor(50, strip.Color(0, 255, 0));  //green
+  //strip.setPixelColor(75, strip.Color(0, 0, 255));  //blue
+  //strip.setPixelColor(100, strip.Color(128, 0, 128)); //purple
+  //strip.setPixelColor(125, strip.Color(255, 0, 0));  //red
+  //strip.setPixelColor(150, strip.Color(0, 255, 0));  //green
+  //strip.setPixelColor(175, strip.Color(0, 0, 255));  //blue
+  //strip.setPixelColor(200, strip.Color(128, 0, 128)); //purple
+  //strip.setPixelColor(225, strip.Color(255, 0, 0));  //red
+  //strip.setPixelColor(250, strip.Color(0, 255, 0));  //green
+  //strip.setPixelColor(275, strip.Color(0, 0, 255));  //blue
+  //strip.setPixelColor(300, strip.Color(128, 0, 128)); //purple
+  //strip.setPixelColor(325, strip.Color(255, 0, 0));  //red
+  //strip.setPixelColor(350, strip.Color(0, 255, 0));  //green
+  //strip.setPixelColor(375, strip.Color(0, 0, 255));  //blue
+  //strip.setPixelColor(400, strip.Color(128, 0, 128)); //purple
+  //strip.setPixelColor(425, strip.Color(255, 0, 0));  //red
 }
 
 // Maps a value from 0–255 to a color
@@ -132,6 +195,12 @@ void loop() {
       strip.show();
       responseMessage = "Connected successfully";
     }
+    else if (request.indexOf("GET /startGame") >= 0) {
+      responseMessage = handleStartGameRequest();
+    }
+    else if (request.indexOf("GET /wonGame") >= 0) {
+      responseMessage = handleWonGameRequest();
+    }
 
     Serial.println(responseMessage);
 
@@ -160,18 +229,45 @@ String handleModeRequest(String request) {
     Serial.println(mode);
 
     if (mode == 1) {
-      strip.setPixelColor(0, strip.Color(0, 255, 0)); // Green
+      currentModePath = mode1Path;
+      currentModeLengths = mode1Lengths;
+      currentModeColor = mode1Color;
+      currentModePathLength = mode1PathLength;
+      lightUpPath();
     } else if (mode == 2) {
-      strip.setPixelColor(0, strip.Color(255, 165, 0)); // Orange
+      currentModePath = mode2Path;
+      currentModeLengths = mode2Lengths;
+      currentModeColor = mode2Color;
+      currentModePathLength = mode2PathLength;
+      lightUpPath();
     } else if (mode == 3) {
-      strip.setPixelColor(0, strip.Color(255, 255, 0)); // Yellow
+      currentModePath = mode3Path;
+      currentModeLengths = mode3Lengths;
+      currentModeColor = mode3Color;
+      currentModePathLength = mode3PathLength;
+      lightUpPath();
     } else {
       return "Invalid mode value";
     }
-    strip.show();
     return "Mode set to " + String(mode);
   }
   return "Invalid mode request";
+}
+
+String handleStartGameRequest() {
+  // Clear all LEDs
+  strip.clear();
+  strip.show();
+
+  int* space = currentModePath[0];
+  int numLights = currentModeLengths[0];
+
+  // Light up first space of current mode
+  for (int i = 0; i < numLights; i++) {
+    strip.setPixelColor(space[i], strip.Color(currentModeColor[0], currentModeColor[1], currentModeColor[2]));
+  }
+
+  strip.show();
 }
 
 // Helper function to handle receiving the initial and final target indices of board squares
@@ -204,15 +300,15 @@ String handleTargetRequest(String request) {
       // Compare received indices and change lights accordingly
       if (initialIndex == finalIndex) {
         // Get indices of lights to light up the space
-        int* lights = mode2Path[finalIndex];
-        int numLights = mode2Lengths[finalIndex];
+        int* lights = currentModePath[finalIndex];
+        int numLights = currentModeLengths[finalIndex];
 
         if (finalIndex > 15) {
           return "Won";
         }
 
         for (int i = 0; i < numLights; i++) {
-          strip.setPixelColor(lights[i], strip.Color(255, 0, 0));
+          strip.setPixelColor(lights[i], strip.Color(currentModeColor[0], currentModeColor[1], currentModeColor[2]));
         }
 
         strip.show();
@@ -220,22 +316,68 @@ String handleTargetRequest(String request) {
       }
       else {
         // Get indices of lights to light up the space
-        int* lights = mode2Path[finalIndex];
-        int numLights = mode2Lengths[finalIndex];
+        int* lights = currentModePath[finalIndex];
+        int numLights = currentModeLengths[finalIndex];
 
         if (finalIndex > 15) {
           return "Won";
         }
 
         for (int i = 0; i < numLights; i++) {
-          strip.setPixelColor(lights[i], strip.Color(255, 0, 0));
+          strip.setPixelColor(lights[i], strip.Color(currentModeColor[0], currentModeColor[1], currentModeColor[2]));
         }
 
         strip.show();
-        return "Set to Green, target mismatched";
+        return "Target mismatched";
       }
 
       // If neither of the above statements execute, request is invalid
       return "Invalid target request";
     }
+}
+
+// Helper function to light up path rainbow on win
+String handleWonGameRequest() {
+  // Clear previous lights
+  strip.clear();
+  strip.show();
+
+  int totalLEDs = 0;
+  for (int i = 0; i < currentModePathLength; i++) {
+    totalLEDs += currentModeLengths[i];
+  }
+
+  int ledCount = 0;
+  for (int i = 0; i < currentModePathLength; i++) {
+    for (int j = 0; j < currentModeLengths[i]; j++) {
+      int ledIndex = currentModePath[i][j];
+
+      // Generate rainbow colors using a hue shift
+      // Map ledCount to a color on the spectrum (simple rainbow gradient)
+      float hue = (float)ledCount / totalLEDs; // Range 0.0 to 1.0
+      uint32_t color = Wheel((int)(hue * 255));
+
+      strip.setPixelColor(ledIndex, color);
+      ledCount++;
+    }
+  }
+
+  strip.show();
+  return "Player won!";
+}
+
+// Helper function to light up the path of the chosen mode
+void lightUpPath() {
+  // Clear previous lights
+  strip.clear();
+  strip.show();
+
+  for (int i = 0; i < currentModePathLength; i++) {
+    for (int j = 0; j < currentModeLengths[i]; j++) {
+      int ledIndex = currentModePath[i][j];
+      strip.setPixelColor(ledIndex, strip.Color(currentModeColor[0], currentModeColor[1], currentModeColor[2]));
+    }
+  }
+
+  strip.show();
 }

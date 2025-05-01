@@ -11,7 +11,7 @@ public class ArduinoConnector {
     private static final String ARDUINO_IP = "http://172.20.10.6";
 
     // Flag to enable/disable Arduino communication
-    private static final boolean ARDUINO_ENABLED = false; // Set to false to disable Arduino communication
+    private static final boolean ARDUINO_ENABLED = true; // Set to false to disable Arduino communication
 
     // Function to send HTTP request to arduino: called within helper functions to send specific requests
     private static void sendRequest(String urlString) {
@@ -63,6 +63,18 @@ public class ArduinoConnector {
     // Helper function to send the initial and final target indices for board spaces to the arduino
     public static void sendTargetIndices(int initial, int fin) {
         String url = ARDUINO_IP + "/setTargets?initial=" + initial + "&final=" + fin;
+        sendRequest(url);
+    }
+
+    // Helper function to tell arduino that game has started so it can place player at space 0
+    public static void sendStartGame() {
+        String url = ARDUINO_IP + "/startGame";
+        sendRequest(url);
+    }
+
+    // Helper function to tell arduino that the game was won
+    public static void sendWonGame() {
+        String url = ARDUINO_IP + "/wonGame";
         sendRequest(url);
     }
 

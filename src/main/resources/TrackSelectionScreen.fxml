@@ -16,7 +16,7 @@
     </padding>
 
     <top>
-        <Label text="Select a Track" alignment="CENTER" style="-fx-background-color: rgba(255, 255, 255, 0.8); -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);" BorderPane.alignment="CENTER">
+        <Label alignment="CENTER" style="-fx-background-color: rgba(255, 255, 255, 0.8); -fx-padding: 15; -fx-background-radius: 10; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);" text="Select a Track" BorderPane.alignment="CENTER">
             <font>
                 <Font name="Arial Bold" size="28.0" />
             </font>
@@ -31,9 +31,7 @@
             <!-- Left Side: Track Buttons -->
             <VBox alignment="CENTER" spacing="20.0">
                 <!-- Shrek Theme Button (Green) -->
-                <Button fx:id="track1Button" mnemonicParsing="false" onAction="#handleTrack1Button"
-                        prefHeight="60.0" prefWidth="280.0"
-                        style="-fx-background-color: #7c9f45; -fx-text-fill: #f2e8c9; -fx-border-color: #3e5520; -fx-border-width: 3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);">
+                <Button fx:id="track1Button" mnemonicParsing="false" onAction="#handleTrack1Button" prefHeight="60.0" prefWidth="280.0" style="-fx-background-color: #7c9f45; -fx-text-fill: #f2e8c9; -fx-border-color: #3e5520; -fx-border-width: 3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);">
                     <graphic>
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <Circle fx:id="track1Circle" fill="#3e5520" radius="12.0" stroke="#d9ed92" strokeType="INSIDE" strokeWidth="2" />
@@ -47,9 +45,7 @@
                 </Button>
 
                 <!-- Rainforest Theme Button (Blue-Green) -->
-                <Button fx:id="track2Button" mnemonicParsing="false" onAction="#handleTrack2Button"
-                        prefHeight="60.0" prefWidth="280.0"
-                        style="-fx-background-color: #1a936f; -fx-text-fill: #f3e9d2; -fx-border-color: #88d498; -fx-border-width: 3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);">
+                <Button fx:id="track2Button" mnemonicParsing="false" onAction="#handleTrack2Button" prefHeight="60.0" prefWidth="280.0" style="-fx-background-color: #1a936f; -fx-text-fill: #f3e9d2; -fx-border-color: #88d498; -fx-border-width: 3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);">
                     <graphic>
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <Circle fx:id="track2Circle" fill="#114b5f" radius="12.0" stroke="#88d498" strokeType="INSIDE" strokeWidth="2" />
@@ -63,9 +59,7 @@
                 </Button>
 
                 <!-- Pirate Theme Button (Brown) -->
-                <Button fx:id="track3Button" mnemonicParsing="false" onAction="#handleTrack3Button"
-                        prefHeight="60.0" prefWidth="280.0"
-                        style="-fx-background-color: #c99767; -fx-text-fill: #2c1603; -fx-border-color: #7d5a3c; -fx-border-width: 3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);">
+                <Button fx:id="track3Button" mnemonicParsing="false" onAction="#handleTrack3Button" prefHeight="60.0" prefWidth="280.0" style="-fx-background-color: #c99767; -fx-text-fill: #2c1603; -fx-border-color: #7d5a3c; -fx-border-width: 3; -fx-border-radius: 8; -fx-background-radius: 8; -fx-font-weight: bold; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.3), 5, 0, 0, 0);">
                     <graphic>
                         <HBox alignment="CENTER_LEFT" spacing="15.0">
                             <Circle fx:id="track3Circle" fill="#7d5a3c" radius="12.0" stroke="#e6c89c" strokeType="INSIDE" strokeWidth="2" />
@@ -84,7 +78,7 @@
                 <padding>
                     <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
                 </padding>
-                <Label text="Track Information" style="-fx-text-fill: #333333;">
+                <Label style="-fx-text-fill: #333333;" text="Track Information">
                     <font>
                         <Font name="Arial Bold" size="18.0" />
                     </font>
@@ -92,7 +86,7 @@
                         <Insets bottom="5.0" />
                     </VBox.margin>
                 </Label>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Shrek's Swamp Trek:&#10;Make your way from the fancy halls of Duloc Castle back to Shrek's beloved swamp! Watch out for fairy tale mischief along the way — it's a muddy, magical journey home!&#10;&#10;Rainforest Rumble:&#10;Climb aboard your adventure through the lush jungle! Discover playful animals, mysterious plants, and other rainforest creatures as you navigate the wild tropical world.&#10;&#10;Pirate's Gold Rush:&#10;Set sail on the ultimate adventure to find the legendary hidden treasure! Follow the twists and turns of the map, brave obstacles, and race to reach the X before someone else!" style="-fx-fill: #333333;" wrappingWidth="260.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-fill: #333333;" text="Shrek's Swamp Trek:&#10;Make your way from the fancy halls of Duloc Castle back to Shrek's beloved swamp! Watch out for fairy tale mischief along the way — it's a muddy, magical journey home!&#10;&#10;Rainforest Rumble:&#10;Climb aboard your adventure through the lush jungle! Discover playful animals, mysterious plants, and other rainforest creatures as you navigate the wild tropical world.&#10;&#10;Pirate's Gold Rush:&#10;Set sail on the ultimate adventure to find the legendary hidden treasure! Follow the twists and turns of the map, brave obstacles, and race to reach the X before someone else!" wrappingWidth="260.0">
                     <font>
                         <Font size="14.0" />
                     </font>
@@ -102,10 +96,7 @@
     </center>
 
     <bottom>
-        <Button fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#handleStartGameButton"
-                prefHeight="70.0" prefWidth="250.0"
-                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 35; -fx-font-size: 18px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 3);"
-                text="Start Adventure" BorderPane.alignment="CENTER">
+        <Button fx:id="startGameButton" disable="true" mnemonicParsing="false" onAction="#handleStartGameButton" prefHeight="70.0" prefWidth="250.0" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 35; -fx-font-size: 18px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 3);" text="Start Adventure" BorderPane.alignment="CENTER">
             <BorderPane.margin>
                 <Insets bottom="30.0" top="30.0" />
             </BorderPane.margin>
