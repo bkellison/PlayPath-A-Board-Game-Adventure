@@ -60,9 +60,9 @@ public class GameController {
     // Arrays to hold the special messages that will be displayed on the screen as a result of landing on special spaces
     private final String[] specialMessage1 = {
             "Oh no! Lord Farquaad sents his knights after you — move back one space.",
-            "Not the gumdrop buttons! The Gingerbread Man lost a leg! — move back two spaces.",
             "Fiona shows you a shortcut — move up one space!",
-            "Dragon swoops in and gives you a lift — fly forward three spaces!"
+            "Dragon swoops in and gives you a lift — fly forward three spaces!",
+            "Not the gumdrop buttons! The Gingerbread Man lost a leg! — move back two spaces."
     };
 
     private final String[] specialMessage2 = {
