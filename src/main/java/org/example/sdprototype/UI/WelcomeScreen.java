@@ -39,15 +39,6 @@ public class WelcomeScreen {
 
         // Create scene
         scene = new Scene(root, 800, 600);
-
-        // Add key event handler
-        scene.setOnKeyPressed(event -> {
-            if (event.getCode() == KeyCode.SPACE) {
-                // Show game selection screen when space is pressed
-                GameSelectionScreen gameSelectionScreen = new GameSelectionScreen(primaryStage);
-                primaryStage.setScene(gameSelectionScreen.getScene());
-            }
-        });
     }
 
     public Scene getScene() {

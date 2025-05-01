@@ -26,10 +26,12 @@ public class WelcomeScreenController {
 
     private void showGameSelectionScreen() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/GameSelectionScreen.fxml"));
+            // Instead of loading GameSelectionScreen.fxml, load TrackSelectionScreen.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/TrackSelectionScreen.fxml"));
             Parent root = loader.load();
 
-            GameSelectionScreenController controller = loader.getController();
+            // Get the controller and set the stage
+            TrackSelectionScreenController controller = loader.getController();
             controller.setStage(stage);
 
             Scene scene = new Scene(root, 800, 600);
