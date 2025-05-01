@@ -3,28 +3,36 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #f0f8ff;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.sdprototype.Controllers.WelcomeScreenController">
-
+<BorderPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom right, #6A11CB, #2575FC);" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.sdprototype.Controllers.WelcomeScreenController">
     <center>
-        <VBox alignment="CENTER" spacing="30.0">
-            <Label text="PlayPath: A Board Game Adventure">
+        <VBox alignment="CENTER" spacing="30.0" style="-fx-background-color: rgba(255, 255, 255, 0.8); -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets bottom="80.0" left="120.0" right="120.0" top="80.0" />
+            </BorderPane.margin>
+
+            <Label alignment="CENTER" text="PlayPath: A Board Game Adventure" textAlignment="CENTER" wrapText="true">
                 <font>
-                    <Font name="Arial Bold" size="42.0" />
+                    <Font name="Arial Bold" size="36.0" />
                 </font>
             </Label>
 
-            <Label text="Welcome!">
-                <font>
-                    <Font name="Arial" size="24.0" />
-                </font>
-            </Label>
-
-            <Label text="Press SPACE to continue">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Embark on an exciting journey through magical worlds and treacherous paths. Roll the dice, navigate the board, and be the first to reach the end!" textAlignment="CENTER" wrappingWidth="500.0">
                 <font>
                     <Font name="Arial" size="18.0" />
+                </font>
+            </Text>
+
+            <Label alignment="CENTER" contentDisplay="CENTER" style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-padding: 15 30; -fx-background-radius: 30; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 5, 0, 0, 2);" text="Press SPACE to continue" textAlignment="CENTER">
+                <font>
+                    <Font name="Arial Bold" size="20.0" />
                 </font>
                 <VBox.margin>
                     <Insets top="40.0" />

@@ -11,9 +11,14 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,7 +37,7 @@ public class GameController {
     private GameTrack selectedTrack;
     private Player currentPlayer;
     private int currentTrackIndex = 0; // Track the current position in the track
-    private Circle playerToken;
+    private Node playerToken;
     private Pane trackDisplayPane;
     private boolean animationInProgress = false;
     private Button rollDiceButton;
@@ -100,13 +105,59 @@ public class GameController {
         // Create the track display pane
         trackDisplayPane = new Pane();
 
-        // Create player token
-        playerToken = new Circle(15, Color.YELLOW);
-        playerToken.setStroke(Color.BLACK);
-        playerToken.setStrokeWidth(2);
+        // Create themed player token instead of the yellow circle
+        playerToken = createThemedPlayerToken();
 
         // Add the player token to the track display pane
         trackDisplayPane.getChildren().add(playerToken);
+    }
+
+    /**
+     * Creates a themed player token based on the selected track
+     * @return A Node representing the themed player token
+     */
+    private Node createThemedPlayerToken() {
+        String trackName = selectedTrack.getName();
+
+        // Create a StackPane to hold our token
+        StackPane token = new StackPane();
+        token.setPrefSize(40, 40);
+
+        // For visual appeal if the image fails to load
+        Circle fallbackCircle = new Circle(20);
+        Text symbolText = new Text();
+        symbolText.setFont(Font.font("Arial", 24));
+
+        if (Objects.equals(trackName, "Track 1")) {
+            // Shrek theme
+            fallbackCircle.setFill(Color.web("#7c9f45", 0.8)); // Shrek green
+            symbolText.setText("🧌"); // Ogre emoji for Shrek
+        } else if (Objects.equals(trackName, "Track 2")) {
+            // Rainforest theme
+            fallbackCircle.setFill(Color.web("#1a936f", 0.8)); // Jungle green
+            symbolText.setText("🐒"); // Monkey emoji
+        } else {
+            // Pirate theme
+            fallbackCircle.setFill(Color.web("#c99767", 0.8)); // Gold/treasure color
+            symbolText.setText("🏴‍☠️"); // Pirate flag emoji
+        }
+
+        // Add stroke to make it stand out
+        fallbackCircle.setStroke(Color.BLACK);
+        fallbackCircle.setStrokeWidth(2);
+
+        // Add shadow effect for depth
+        DropShadow shadow = new DropShadow();
+        shadow.setRadius(5.0);
+        shadow.setOffsetX(3.0);
+        shadow.setOffsetY(3.0);
+        shadow.setColor(Color.color(0, 0, 0, 0.3));
+        token.setEffect(shadow);
+
+        // Add fallback elements to the token
+        token.getChildren().addAll(fallbackCircle, symbolText);
+
+        return token;
     }
 
     /**
@@ -163,15 +214,16 @@ public class GameController {
             double centerX = spaceX + space.getWidth() / 2;
             double centerY = spaceY + space.getHeight() / 2;
 
-            playerToken.setCenterX(centerX);
-            playerToken.setCenterY(centerY);
+            // Position the token at the center of the space
+            playerToken.setLayoutX(centerX - playerToken.getBoundsInLocal().getWidth() / 2);
+            playerToken.setLayoutY(centerY - playerToken.getBoundsInLocal().getHeight() / 2);
 
             space.layoutBoundsProperty().addListener((obs, oldBounds, newBounds) -> {
                 double updatedX = space.getLocalToSceneTransform().getTx() + space.getWidth() / 2;
                 double updatedY = space.getLocalToSceneTransform().getTy() + space.getHeight() / 2;
 
-                playerToken.setCenterX(updatedX);
-                playerToken.setCenterY(updatedY);
+                playerToken.setLayoutX(updatedX - playerToken.getBoundsInLocal().getWidth() / 2);
+                playerToken.setLayoutY(updatedY - playerToken.getBoundsInLocal().getHeight() / 2);
             });
         }
     }
@@ -328,11 +380,15 @@ public class GameController {
             final double finalCenterY = centerY;
             final int currentIndex = index;
 
+            // Calculate token's center point
+            double tokenWidth = playerToken.getBoundsInLocal().getWidth();
+            double tokenHeight = playerToken.getBoundsInLocal().getHeight();
+
             // Add hop up animation
             KeyFrame hopUpFrame = new KeyFrame(
                     Duration.seconds(timePoint + hopDuration/3),
-                    new KeyValue(playerToken.centerXProperty(), centerX),
-                    new KeyValue(playerToken.centerYProperty(), centerY - 20) // Hop up 20 pixels
+                    new KeyValue(playerToken.layoutXProperty(), centerX - tokenWidth/2),
+                    new KeyValue(playerToken.layoutYProperty(), centerY - tokenHeight/2 - 20) // Hop up 20 pixels
             );
 
             // Add landing animation
@@ -342,8 +398,8 @@ public class GameController {
                         if (currentIndex == endIndex) {
                             // Update the current index when this frame finishes
                             currentTrackIndex = currentIndex;
-                            playerToken.setCenterX(finalCenterX);
-                            playerToken.setCenterY(finalCenterY);
+                            playerToken.setLayoutX(finalCenterX - tokenWidth/2);
+                            playerToken.setLayoutY(finalCenterY - tokenHeight/2);
 
                             // Update player object location
                             if (currentPlayer != null) {
@@ -362,8 +418,8 @@ public class GameController {
                             }
                         }
                     },
-                    new KeyValue(playerToken.centerXProperty(), centerX),
-                    new KeyValue(playerToken.centerYProperty(), centerY)
+                    new KeyValue(playerToken.layoutXProperty(), centerX - tokenWidth/2),
+                    new KeyValue(playerToken.layoutYProperty(), centerY - tokenHeight/2)
             );
 
             timeline.getKeyFrames().addAll(hopUpFrame, landFrame);

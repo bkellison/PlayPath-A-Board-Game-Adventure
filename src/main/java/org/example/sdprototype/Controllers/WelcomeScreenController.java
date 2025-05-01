@@ -1,5 +1,6 @@
 package org.example.sdprototype.Controllers;
 
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -11,6 +12,11 @@ import java.io.IOException;
 
 public class WelcomeScreenController {
     private Stage stage;
+
+    @FXML
+    public void initialize() {
+        System.out.println("WelcomeScreenController initialized");
+    }
 
     public void setStage(Stage stage) {
         this.stage = stage;
@@ -26,7 +32,7 @@ public class WelcomeScreenController {
 
     private void showGameSelectionScreen() {
         try {
-            // Instead of loading GameSelectionScreen.fxml, load TrackSelectionScreen.fxml
+            // Load TrackSelectionScreen.fxml
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/TrackSelectionScreen.fxml"));
             Parent root = loader.load();
 
@@ -37,6 +43,7 @@ public class WelcomeScreenController {
             Scene scene = new Scene(root, 800, 600);
             stage.setScene(scene);
         } catch (IOException e) {
+            System.err.println("Error loading track selection screen: " + e.getMessage());
             e.printStackTrace();
         }
     }
