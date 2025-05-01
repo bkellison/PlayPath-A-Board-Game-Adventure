@@ -3,7 +3,7 @@
 #include <WiFi.h>
 
 #define LED_PIN 6       // Pin connected to the LED strip
-#define NUM_LEDS 1      // Only controlling the first LED (temp)
+#define NUM_LEDS 439
 
 char ssid[] = "MarissaiPhone";     // WiFi SSID (WiFi name)
 char pass[] = "MolKinDaxWilLucBlu$&2016"; // WiFi password
@@ -14,14 +14,45 @@ int status = WL_IDLE_STATUS;
 
 Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
 
+/*
+ * LED Light Indices:
+ */
+
+/*
+ * Mode 2: Rainforest rumble
+ */
+int mode2Space0[] = {436, 435, 364};
+int mode2Space1[] = {431, 377, 378};
+int mode2Space2[] = {278, 279, 282};
+int mode2Space3[] = {207, 211};
+int mode2Space4[] = {82, 140};
+int mode2Space5[] = {156, 157, 86};
+int mode2Space6[] = {127, 128, 90};
+int mode2Space7[] = {202, 203, 198, 199};
+int mode2Space8[] = {274, 351};
+int mode2Space9[] = {347, 236};
+int mode2Space10[] = {342, 341, 261, 262};
+int mode2Space11[] = {189, 190, 194};
+int mode2Space12[] = {99, 123};
+int mode2Space13[] = {173, 174, 103, 104};
+int mode2Space14[] = {177, 178, 110, 111};
+int mode2Space15[] = {45, 41, 40};
+
+int mode2Lengths[] = {3, 3, 4, 2, 2, 3, 3, 4, 2, 2, 4, 3, 2, 4, 4, 2};
+
+int* mode2Path[] = {mode2Space0, mode2Space1, mode2Space2, mode2Space3, mode2Space4, mode2Space5,
+mode2Space6, mode2Space7, mode2Space8, mode2Space9, mode2Space10, mode2Space11, mode2Space12,
+mode2Space13, mode2Space14, mode2Space15};
+
 void setup() {
   Serial.begin(9600);
 
   // Initialize LED strip
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
-  strip.setPixelColor(0, strip.Color(0, 0, 255)); // Blue
-  strip.show();
+
+  // Show a static rainbow
+  rainbow();
 
   // Connect to WiFi
   while (status != WL_CONNECTED) {
@@ -39,6 +70,44 @@ void setup() {
   server.begin();
   Serial.print("IP Address: ");
   Serial.println(WiFi.localIP());
+
+  strip.clear();
+  strip.show();
+
+  // TESTING LIGHTS
+  //strip.setPixelColor(50, strip.Color(0, 0, 255));
+  //strip.setPixelColor(100, strip.Color(0, 0, 255));
+  //strip.setPixelColor(150, strip.Color(0, 0, 255));
+  //strip.setPixelColor(200, strip.Color(0, 0, 255));
+  //strip.setPixelColor(250, strip.Color(0, 0, 255));
+  //strip.setPixelColor(300, strip.Color(0, 0, 255));
+  //strip.setPixelColor(350, strip.Color(0, 0, 255));
+  //strip.setPixelColor(400, strip.Color(0, 0, 255));
+
+  strip.show();
+}
+
+// Maps a value from 0–255 to a color
+uint32_t Wheel(byte WheelPos) {
+  WheelPos = 255 - WheelPos;
+  if (WheelPos < 85) {
+    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
+  } else if (WheelPos < 170) {
+    WheelPos -= 85;
+    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
+  } else {
+    WheelPos -= 170;
+    return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
+  }
+}
+
+// Displays a rainbow across the LED strip
+void rainbow() {
+  for (int i = 0; i < NUM_LEDS; i++) {
+    int colorIndex = (i * 256 / NUM_LEDS);  // Spread the rainbow over the strip
+    strip.setPixelColor(i, Wheel(colorIndex & 255));
+  }
+  strip.show();
 }
 
 void loop() {
@@ -63,6 +132,8 @@ void loop() {
       strip.show();
       responseMessage = "Connected successfully";
     }
+
+    Serial.println(responseMessage);
 
     // Send basic HTTP response
     client.println("HTTP/1.1 200 OK");
@@ -116,6 +187,10 @@ String handleTargetRequest(String request) {
     String color = "";
 
     if (initialPos >=0 && finalPos >=0) {
+      // Clear last space
+      strip.clear();
+      strip.show();
+
       // Extract query parameter values
       initialIndex = request.substring(initialPos + 8, request.indexOf('&', initialPos)).toInt();
       finalIndex = request.substring(finalPos + 6).toInt();
@@ -128,12 +203,34 @@ String handleTargetRequest(String request) {
 
       // Compare received indices and change lights accordingly
       if (initialIndex == finalIndex) {
-        strip.setPixelColor(0, strip.Color(128, 0, 128));  // Purple
+        // Get indices of lights to light up the space
+        int* lights = mode2Path[finalIndex];
+        int numLights = mode2Lengths[finalIndex];
+
+        if (finalIndex > 15) {
+          return "Won";
+        }
+
+        for (int i = 0; i < numLights; i++) {
+          strip.setPixelColor(lights[i], strip.Color(255, 0, 0));
+        }
+
         strip.show();
-        return "Set to Purple, target matched";
+        return "Target matched";
       }
       else {
-        strip.setPixelColor(0, strip.Color(0, 255, 0));   // Green
+        // Get indices of lights to light up the space
+        int* lights = mode2Path[finalIndex];
+        int numLights = mode2Lengths[finalIndex];
+
+        if (finalIndex > 15) {
+          return "Won";
+        }
+
+        for (int i = 0; i < numLights; i++) {
+          strip.setPixelColor(lights[i], strip.Color(255, 0, 0));
+        }
+
         strip.show();
         return "Set to Green, target mismatched";
       }
