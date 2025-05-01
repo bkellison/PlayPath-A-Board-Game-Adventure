@@ -409,6 +409,7 @@ public class GameController {
                             // Handle winning move
                             if (isWinningMove) {
                                 showWinnerScreen();
+                                ArduinoConnector.sendWonGame();
                             } else {
                                 // Re-enable roll button after animation completes
                                 animationInProgress = false;
