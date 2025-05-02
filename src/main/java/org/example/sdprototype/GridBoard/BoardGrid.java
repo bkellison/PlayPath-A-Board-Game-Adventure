@@ -49,11 +49,6 @@ public class BoardGrid {
                 space.setPrefSize(80, 80);
                 boardSpaces[row][col] = space;
 
-                // Add space number for reference (optional - can be commented out)
-                //int spaceNumber = getSpaceNumber(row, col);
-                //Text spaceNumberText = new Text(String.valueOf(spaceNumber));
-                //spaceNumberText.setStyle("-fx-font-size: 12px;");
-
                 StackPane spaceWithNumber = new StackPane(space);
                 boardGrid.add(spaceWithNumber, col, row);
             }
@@ -91,16 +86,6 @@ public class BoardGrid {
         }
 
         return track;
-    }
-
-    private int getSpaceNumber(int row, int col) {
-        if (row % 2 == 0) {
-            // Left to right rows
-            return row * 8 + col + 1;
-        } else {
-            // Right to left rows
-            return row * 8 + (8 - col);
-        }
     }
 
     public void highlightTrack(GameTrack track) {
