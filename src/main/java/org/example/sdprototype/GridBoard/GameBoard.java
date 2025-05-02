@@ -92,9 +92,17 @@ public class GameBoard {
 
             gameController.initializePlayer();
 
-            Scene scene = new Scene(mainLayout, 900, 650);
+            // Create a larger scene for the game board
+            Scene scene = new Scene(mainLayout, 1000, 750);
             primaryStage.setScene(scene);
-            primaryStage.setTitle("Board Game");
+            primaryStage.setTitle("PlayPath: Board Game Adventure");
+
+            // Maintain minimum window size
+            primaryStage.setMinWidth(900);
+            primaryStage.setMinHeight(700);
+
+            // Center the window after any resizing
+            primaryStage.centerOnScreen();
             primaryStage.show();
         } catch (IOException e) {
             System.err.println("IOException: " + e.getMessage());

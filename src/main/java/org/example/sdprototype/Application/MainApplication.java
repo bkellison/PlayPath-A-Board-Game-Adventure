@@ -13,7 +13,7 @@ public class MainApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         System.out.println("Starting Application");
-        primaryStage.setTitle("Board Game");
+        primaryStage.setTitle("PlayPath: A Board Game Adventure");
 
         // Preload sounds
         preloadGameSounds();
@@ -24,11 +24,16 @@ public class MainApplication extends Application {
         // Get the controller and set the stage
         WelcomeScreenController controller = loader.getController();
 
-        Scene scene = new Scene(root, 800, 600);
+        // Create the scene with larger initial dimensions
+        Scene scene = new Scene(root, 1000, 750);
         primaryStage.setScene(scene);
+        primaryStage.setMinWidth(900);  // Set minimum width
+        primaryStage.setMinHeight(700); // Set minimum height
 
         controller.setStage(primaryStage);
 
+        // Center the window on screen
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
@@ -51,8 +56,6 @@ public class MainApplication extends Application {
 
     @Override
     public void stop() {
-        // Clean up sound resources when application closes
-        System.out.println("Cleaning up sound resources...");
         SoundManager.cleanup();
     }
 

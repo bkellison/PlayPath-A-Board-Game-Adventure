@@ -45,12 +45,15 @@ public class WinnerScreenController {
             Stage stage = (Stage) playAgainButton.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/TrackSelectionScreen.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 800, 600);
+            Scene scene = new Scene(root, 1000, 750);
             stage.setScene(scene);
 
             // Get the controller and set the stage
             TrackSelectionScreenController controller = loader.getController();
             controller.setStage(stage);
+
+            // Center the window after resizing
+            stage.centerOnScreen();
 
             // Tell arduino we are playing a new game
             ArduinoConnector.sendNewGame();
@@ -66,12 +69,13 @@ public class WinnerScreenController {
             Stage stage = (Stage) mainMenuButton.getScene().getWindow();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/WelcomeScreen.fxml"));
             Parent root = loader.load();
-            Scene scene = new Scene(root, 800, 600);
+            Scene scene = new Scene(root, 1000, 750);
             stage.setScene(scene);
 
-            // Get the controller and set the stage
             WelcomeScreenController controller = loader.getController();
             controller.setStage(stage);
+
+            stage.centerOnScreen();
         } catch (IOException ex) {
             System.out.println("Could not load welcome screen: " + ex.getMessage());
             try {

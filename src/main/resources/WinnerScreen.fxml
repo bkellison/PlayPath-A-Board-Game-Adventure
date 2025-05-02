@@ -4,43 +4,51 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.effect.DropShadow?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.example.sdprototype.Controllers.WinnerScreenController"
-            style="-fx-background-color: #f8f9fa;"
-            prefHeight="600.0" prefWidth="800.0">
+            style="-fx-background-color: linear-gradient(to bottom right, #2F80ED, #56CCF2);"
+            prefHeight="750.0" prefWidth="1000.0">
 
     <center>
-        <VBox alignment="CENTER" spacing="30.0">
-            <Text fx:id="congratsText" text="Congratulations!" fill="GREEN">
+        <VBox alignment="CENTER" spacing="40.0" style="-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 15, 0, 0, 0);">
+            <padding>
+                <Insets top="50.0" right="50.0" bottom="50.0" left="50.0" />
+            </padding>
+            <BorderPane.margin>
+                <Insets top="80.0" right="150.0" bottom="80.0" left="150.0" />
+            </BorderPane.margin>
+
+            <Text fx:id="congratsText" text="Congratulations!" style="-fx-fill: #4CAF50;">
                 <font>
-                    <Font name="Arial Bold" size="36.0" />
+                    <Font name="Arial Bold" size="48.0" />
+                </font>
+                <effect>
+                    <DropShadow color="rgba(0,0,0,0.3)" radius="5.0" offsetX="2.0" offsetY="2.0" />
+                </effect>
+            </Text>
+
+            <Text fx:id="winnerText" text="Player has won the game!" textAlignment="CENTER" wrappingWidth="500.0">
+                <font>
+                    <Font name="Arial" size="30.0" />
                 </font>
             </Text>
 
-            <Text fx:id="winnerText" text="Player has won the game!">
-                <font>
-                    <Font name="Arial" size="24.0" />
-                </font>
-            </Text>
+            <HBox alignment="CENTER" spacing="50.0">
+                <Button fx:id="playAgainButton" text="Play Again"
+                        prefWidth="250.0" prefHeight="70.0"
+                        style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 35; -fx-font-size: 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 3);"
+                        onAction="#handlePlayAgain">
+                </Button>
 
-            <Button fx:id="playAgainButton" text="Play Again"
-                    prefWidth="200.0" prefHeight="50.0"
-                    style="-fx-background-color: #4CAF50; -fx-text-fill: white;"
-                    onAction="#handlePlayAgain">
-                <font>
-                    <Font name="Arial" size="16.0" />
-                </font>
-            </Button>
-
-            <Button fx:id="mainMenuButton" text="Main Menu"
-                    prefWidth="200.0" prefHeight="50.0"
-                    onAction="#handleMainMenu">
-                <font>
-                    <Font name="Arial" size="16.0" />
-                </font>
-            </Button>
+                <Button fx:id="mainMenuButton" text="Main Menu"
+                        prefWidth="250.0" prefHeight="70.0"
+                        style="-fx-background-color: #2F80ED; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 35; -fx-font-size: 20px; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.6), 10, 0, 0, 3);"
+                        onAction="#handleMainMenu">
+                </Button>
+            </HBox>
         </VBox>
     </center>
 

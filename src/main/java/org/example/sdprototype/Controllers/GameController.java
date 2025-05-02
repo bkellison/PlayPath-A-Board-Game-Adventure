@@ -343,8 +343,15 @@ public class GameController {
             Parent root = loader.load();
             WinnerScreenController controller = loader.getController();
             controller.setPlayerInfo(currentPlayer);
-            Scene winnerScene = new Scene(root, 800, 600);
+
+            // Create scene with the new dimensions
+            Scene winnerScene = new Scene(root, 1000, 750);
             mainStage.setScene(winnerScene);
+
+            // Set minimum size and center the window
+            mainStage.setMinWidth(900);
+            mainStage.setMinHeight(700);
+            mainStage.centerOnScreen();
         } catch (IOException e) {
             System.out.println("Error loading winner screen: " + e.getMessage());
         }

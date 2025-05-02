@@ -40,8 +40,13 @@ public class WelcomeScreenController {
             TrackSelectionScreenController controller = loader.getController();
             controller.setStage(stage);
 
-            Scene scene = new Scene(root, 800, 600);
+            // Create a larger scene with the new dimensions
+            Scene scene = new Scene(root, 1000, 750);
             stage.setScene(scene);
+            stage.setTitle("Track Selection - PlayPath");
+
+            // Center the window on screen after resizing
+            stage.centerOnScreen();
         } catch (IOException e) {
             System.err.println("Error loading track selection screen: " + e.getMessage());
             e.printStackTrace();
