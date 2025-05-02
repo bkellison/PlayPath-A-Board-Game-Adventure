@@ -27,8 +27,6 @@ public class TrackSelectionScreenController {
     @FXML
     public void initialize() {
         System.out.println("TrackSelectionScreenController initialized");
-
-        // The button styles are already defined in the FXML file
     }
 
     public void setStage(Stage stage) {

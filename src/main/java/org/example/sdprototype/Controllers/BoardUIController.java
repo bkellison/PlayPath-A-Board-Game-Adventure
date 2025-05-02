@@ -38,18 +38,10 @@ public class BoardUIController {
 
     @FXML
     public void initialize() {
-        System.out.println("Initializing BoardUIController...");
-
-        // Debug information to check if the FXML components are properly loaded
-        System.out.println("dicePane: " + (dicePane != null ? "found" : "null"));
-        System.out.println("diceResultText: " + (diceResultText != null ? "found" : "null"));
-        System.out.println("rollDiceButton: " + (rollDiceButton != null ? "found" : "null"));
-
         initializeDiceAnimator();
     }
 
     private void initializeDiceAnimator() {
-        // Initialize the dice animator when the FXML is loaded
         if (dicePane != null && diceResultText != null) {
             try {
                 diceAnimator = new DiceAnimator(dicePane, diceResultText);
@@ -82,7 +74,6 @@ public class BoardUIController {
             trackInfoLabel.setText("Pirate's Gold Rush");
         }
 
-        // Initialize dice animator if it wasn't initialized in the FXML initialize method
         if (diceAnimator == null) {
             initializeDiceAnimator();
         }
@@ -151,14 +142,10 @@ public class BoardUIController {
     public Text getTrackInfoLabel() { return trackInfoLabel; }
     public void setTrackInfoLabel(Text trackInfoLabel) { this.trackInfoLabel = trackInfoLabel; }
 
-    public Text getPlayerInfoLabel() { return playerInfoLabel; }
     public void setPlayerInfoLabel(Text playerInfoLabel) { this.playerInfoLabel = playerInfoLabel; }
 
     public Text getDiceResultText() { return diceResultText; }
     public void setDiceResultText(Text diceResultText) { this.diceResultText = diceResultText; }
-
-    public StackPane getDicePane() { return dicePane; }
-    public void setDicePane(StackPane dicePane) { this.dicePane = dicePane; }
 
     public Label getMessageLabel() { return messageLabel; }
     public void setMessageLabel(Label messageLabel) { this.messageLabel = messageLabel; }
@@ -176,12 +163,6 @@ public class BoardUIController {
         } else {
             System.err.println("Cannot manually initialize dice animator: components still null");
 
-            // Print debug info about the state of UI components
-            System.out.println("Current controller state:");
-            System.out.println("dicePane: " + dicePane);
-            System.out.println("diceResultText: " + diceResultText);
-            System.out.println("rollDiceButton: " + rollDiceButton);
-            System.out.println("messageLabel: " + messageLabel);
         }
     }
 }
