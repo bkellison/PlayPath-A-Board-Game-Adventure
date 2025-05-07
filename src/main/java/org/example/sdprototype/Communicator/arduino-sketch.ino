@@ -19,13 +19,38 @@ Adafruit_NeoPixel strip(NUM_LEDS, LED_PIN, NEO_GRB + NEO_KHZ800);
  */
 
 /*
- * Mode 2: Shrek's Swamp Trek
+ * Mode 1: Shrek's Swamp Trek
  */
-int mode1Space0[] = {};
+int mode1Space0[] = {368, 373};
+int mode1Space1[] = {287, 282, 283};
+int mode1Space2[] = {215, 210, 211};
+int mode1Space3[] = {144, 140};
+int mode1Space4[] = {5, 7};
+int mode1Space5[] = {10, 68};
+int mode1Space6[] = {17, 18, 15};
+int mode1Space7[] = {136, 84, 132, 88};
+int mode1Space8[] = {207, 154, 203, 158};
+int mode1Space9[] = {278, 279, 274};
+int mode1Space10[] = {377, 378, 427};
+int mode1Space11[] = {351, 422, 423};
+int mode1Space12[] = {419, 418, 347};
+int mode1Space13[] = {414, 395};
+int mode1Space14[] = {243, 266};
+int mode1Space15[] = {171, 172, 167};
+int mode1Space16[] = {101, 97};
+int mode1Space17[] = {26, 29};
+int mode1Space18[] = {47, 312};
+int mode1Space19[] = {316, 38};
+int mode1Space20[] = {105, 109};
+int mode1Space21[] = {179, 180, 175, 176};
+int mode1Space22[] = {251, 252, 247, 257};
+int mode1Space23[] = {399, 402, 322};
 
-int mode1Lengths[] = {0};
+int mode1Lengths[] = {2, 3, 3, 2, 2, 2, 3, 4, 4, 3, 3, 3, 3, 2, 2, 3, 2, 2, 2, 2, 2, 4, 4, 3};
 
-int* mode1Path[] = {mode1Space0};
+int* mode1Path[] = {mode1Space0, mode1Space1, mode1Space2, mode1Space3, mode1Space4, mode1Space5, mode1Space6, mode1Space7, mode1Space8,
+mode1Space9, mode1Space10, mode1Space11, mode1Space12, mode1Space13, mode1Space14, mode1Space15, mode1Space16, mode1Space17, mode1Space18,
+mode1Space19, mode1Space20, mode1Space21, mode1Space22, mode1Space23};
 
 int mode1PathLength = 24;
 
