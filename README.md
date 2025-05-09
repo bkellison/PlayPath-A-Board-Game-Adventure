@@ -16,10 +16,13 @@ PlayPath is a Java and Arduino-based game with a physical LED-enabled game board
 PlayPath offers three unique gaming experiences:
 
 ### 1. Shrek's Swamp Trek
+![Shrek's Swamp Trek Board](Board1.png)
 
 ### 2. Rainforest Rumble
+![Rainforest Rumble Board](Board2.png)
 
 ### 3. Pirate's Gold Rush
+![Pirate's Gold Rush Board](Board3.png)
 
 
 ## User Interface
@@ -98,8 +101,6 @@ The Arduino code contains WiFi credentials that should be changed before use. In
 - `/org/example/sdprototype/Utilities`: Helper classes
 - `arduino-sketch.ino`: Arduino code for LED control
 
-## Gameplay Screenshots
-
 ## Circuit Diagram
 
 The physical board uses a simple circuit connecting an Arduino to an addressable LED strip with proper power management components:
@@ -108,4 +109,4 @@ The physical board uses a simple circuit connecting an Arduino to an addressable
 - 1000μF capacitor across power rails
 - 330 ohm resistor on the data line
 
-[This section would include a circuit diagram image]
+![Circuit Diagram](Circuit.png)
