@@ -1,6 +1,6 @@
 # PlayPath: A Board Game Adventure
 
-PlayPath is an interactive physical-digital board game that combines traditional board game play with digital components and LED lighting. The game offers three different themed adventures, each with its own unique storyline, game board layout, and special events.
+Collaborated with a group using an agile process to create PlayPath, an interactive physical-digital board game that combines traditional board game play with digital components and LED lighting. The game offers three different themed adventures, each with its own unique storyline, game board layout, and special events.
 
 ## Accessibility Mission
 PlayPath was specifically designed for a child with Canavan disease, a condition that affects gross motor skills. Traditional video games often require fine motor control that can be challenging or impossible for children with certain disabilities.
